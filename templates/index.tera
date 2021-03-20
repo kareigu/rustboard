@@ -7,20 +7,20 @@
     <link href="/static/bundle.css" rel="stylesheet"/>
   </head>
   <body class="bg-blue-900 text-gray-50">
-    <div>
+    <div class="flex flex-row flex-wrap text-center justify-evenly">
       {% for person in people %}
-        <a href={{ "person/" ~ person.uid }}>
-          <div>
-            <div>
+        <div class="bg-indigo-900 m-3 rounded-sm w-72 h-54 shadow-md border-solid border-2 border-gray-800 hover:border-gray-100 transition-colors">
+          <a href={{ "person/" ~ person.uid }}>
+            <div class="bg-purple-600 rounded-t-md shadow-lg">
               <h3>{{ person.name }}</h3>
             </div>
             <p>UID: {{ person.uid }}</p>
             <p>Age: {{ person.age }}</p>
-            <div>
+            <div class="bg-pink-600 rounded-b-sm">
               <p>Friends: {{ person.number_of_friends }}</p>
             </div>
-          </div>
-        </a>
+          </a>
+        </div>
       {% endfor %}
     </div>
   </body>

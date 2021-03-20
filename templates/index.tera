@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width,initial-scale=1" name="viewport"/>
+    <title>List of people</title>
+    <link href="public/style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <div class="list-people" id="page-content">
+      {% for person in people %}
+        <a href={{ "person/" ~ person.uid }}>
+          <div class="info-container person-box">
+            <div class="header">
+              <h3>{{ person.name }}</h3>
+            </div>
+            <p>UID: {{ person.uid }}</p>
+            <p>Age: {{ person.age }}</p>
+            <div class="friends">
+              <p>Friends: {{ person.number_of_friends }}</p>
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </body>
+</html></body></html>

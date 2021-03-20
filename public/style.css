@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: #474350;
+  color: #F8FFF4;
+}
+
+body a {
+  color: #F8FFF4;
+  text-decoration: none;
+}
+
+
+#page-content {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.list-people {
+  flex-wrap: wrap;
+}
+
+.info-container {
+  background: rgba(0, 0, 0, .3);
+  width: 450px;
+  border-radius: 3px;
+}
+
+.person-box {
+  margin: 8px;
+  border: 2px solid rgba(0, 0, 0, 0);
+  transition: border 250ms ease;
+}
+
+.person-box:hover {
+  border: 2px solid white;
+}
+
+.person-box .friends {
+  padding: 1px;
+}
+
+.header {
+  padding: 1px;
+  border-radius: 3px 3px 0px 0px;
+  background: #FAFAC6;
+  color: black;
+}
+
+.friends {
+  background: #FECDAA;
+  border-radius: 3px;
+}
+
+.friends-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.friend-container {
+  margin: 3px;
+  background: rgba(0, 0, 0, .3);
+  width: 180px;
+  height: 80px;
+  border-radius: 3px;
+}
+
+.friend-container p {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}

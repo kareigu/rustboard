@@ -1,30 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width,initial-scale=1" name="viewport"/>
-    <title>Rustboard</title>
-    <link href="/static/bundle.css" rel="stylesheet"/>
-  </head>
-  <body class="bg-blue-900 text-gray-50">
-    <div class="flex flex-row flex-wrap text-center justify-evenly">
-      {% for thread in threads %}
-        <div class="bg-indigo-900 m-3 rounded-sm w-72 h-54 shadow-md border-solid border-2 border-gray-800 hover:border-gray-100 transition-colors">
-          <a href={{ "/t/" ~ thread.uid }}>
-            <div class="bg-purple-600 rounded-t-md shadow-lg">
-              <h3>{{ thread.title }}</h3>
-            </div>
-            <p>Posted: {{ thread.post_time }}</p>
-            <div class="flex flex-row justify-center text-center m-auto">
-              <img alt="attachment" class="bg-gray-900 p-1 w-32 h-32 shadow-md border-solid border-2 border-gray-800" src={{ "/files/" ~ thread.attachment }}/>
-            </div>
-            <p>UID: {{ thread.uid }}</p>
-            <div class="bg-pink-600 rounded-b-sm">
-              <p>Comments: {{ thread.comment_count }}</p>
-            </div>
-          </a>
-        </div>
-      {% endfor %}
-    </div>
-  </body>
-</html>
+{% extends "base.tera" %}
+{% block title %}Rustboard{% endblock title %}
+{% block content %}
+  <div class="flex flex-row flex-wrap text-center justify-evenly">
+    {% for thread in threads %}
+      <div class="bg-indigo-900 m-3 rounded-sm w-72 h-54 shadow-md border-solid border-2 border-gray-800 hover:border-gray-100 transition-colors">
+        <a href={{ "/t/" ~ thread.uid }}>
+          <div class="bg-purple-600 rounded-t-md shadow-lg">
+            <h3>{{ thread.title }}</h3>
+          </div>
+          <p>Posted: {{ thread.post_time }}</p>
+          <div class="flex flex-row justify-center text-center m-auto">
+            <img alt="attachment" class="bg-gray-900 p-1 w-32 h-32 shadow-md border-solid border-2 border-gray-800" src={{ "/files/" ~ thread.attachment }}/>
+          </div>
+          <p>UID: {{ thread.uid }}</p>
+          <div class="bg-pink-600 rounded-b-sm">
+            <p>Comments: {{ thread.comment_count }}</p>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock content %}

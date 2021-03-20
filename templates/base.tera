@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width,initial-scale=1" name="viewport"/>
+    <title>
+      {% block title %}{% endblock title %}
+    </title>
+    <link href="/static/bundle.css" rel="stylesheet"/> {% block meta %}{% endblock meta %}
+    </head>
+    <body class="bg-blue-900 text-gray-50"> {% block content %}{% endblock content %}
+      </body>
+    </html>

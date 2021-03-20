@@ -60,9 +60,9 @@ fn json_people() -> Json<Vec<FindPerson>> {
   Json(get_people().people)
 }
 
-#[get("/public/<file..>")]
+#[get("/static/<file..>")]
 fn files(file: PathBuf) -> Option<NamedFile> {
-  NamedFile::open(Path::new("public/").join(file)).ok()
+  NamedFile::open(Path::new("static/").join(file)).ok()
 }
 
 fn get_person(uid: String) -> Vec<FindPerson> {

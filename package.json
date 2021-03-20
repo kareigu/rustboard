@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "autoprefixer": "^10.2.5",
+    "postcss": "^8.2.8",
+    "postcss-cli": "^8.3.1",
+    "tailwindcss": "^2.0.4"
+  },
+  "name": "rustboard",
+  "version": "1.0.0",
+  "description": "Imageboard built using Rust and Dgraph",
+  "main": "index.js",
+  "repository": "github.com/mxrr/rustboard",
+  "author": "mxr <eetu.kivelae@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "css:watch": "postcss -w ./styles/styles.css -o ./static/bundle.css",
+    "css:build": "postcss ./styles/styles.css -o ./static/bundle.css"
+  }
+}

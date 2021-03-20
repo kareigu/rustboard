@@ -4,19 +4,19 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width,initial-scale=1" name="viewport"/>
     <title>List of people</title>
-    <link href="public/style.css" rel="stylesheet"/>
+    <link href="/static/bundle.css" rel="stylesheet"/>
   </head>
-  <body>
-    <div class="list-people" id="page-content">
+  <body class="bg-blue-900 text-white">
+    <div>
       {% for person in people %}
         <a href={{ "person/" ~ person.uid }}>
-          <div class="info-container person-box">
-            <div class="header">
+          <div>
+            <div>
               <h3>{{ person.name }}</h3>
             </div>
             <p>UID: {{ person.uid }}</p>
             <p>Age: {{ person.age }}</p>
-            <div class="friends">
+            <div>
               <p>Friends: {{ person.number_of_friends }}</p>
             </div>
           </div>

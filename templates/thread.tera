@@ -34,7 +34,7 @@
     {% if comments %}
       {% for comment in comments %}
         {% if comment.attachment %}
-          <div class="bg-gray-800 rounded-md text-center my-2">
+          <div class="bg-gray-800 rounded-md text-center my-2" id={{ comment.uid }}>
           {% else %}
             <div class="bg-gray-800 rounded-md text-center my-2 h-44">
             {% endif %}
@@ -42,11 +42,11 @@
               <h2 class="mx-2">{{ comment.uid }}</h2>
               <p class="ml-auto mr-2">{{ comment.post_time | date(format="%B %d, %Y, %H:%M:%S") }}</p>
             </div>
-            <div class="flex flex-row">
+            <div class="flex flex-row text-left">
               {% if comment.attachment %}
                 <img alt="attachment" class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" src={{ "/files/" ~ attachment }}/>
               {% endif %}
-              <p class="mx-3">{{ comment.content }}</p>
+              <p class="mx-3 break-all">{{ comment.content }}</p>
             </div>
           </div>
         {% endfor %}

@@ -22,7 +22,7 @@
       <div class="bg-thread-accent-md rounded-t-sm flex flex-row">
         <h3 class="mx-2">{{ uid }}</h3>
         <h2 class="ml-2">{{ title }}</h2>
-        <p class="ml-auto mr-2">{{ post_time }}</p>
+        <p class="ml-auto mr-2">{{ post_time | date(format="%B %d, %Y, %H:%M:%S") }}</p>
       </div>
       <div class="flex flex-row">
         {% if attachment %}
@@ -40,7 +40,7 @@
             {% endif %}
             <div class="bg-thread-accent-md rounded-t-sm flex flex-row">
               <h2 class="mx-2">{{ comment.uid }}</h2>
-              <p class="ml-auto mr-2">{{ comment.post_time }}</p>
+              <p class="ml-auto mr-2">{{ comment.post_time | date(format="%B %d, %Y, %H:%M:%S") }}</p>
             </div>
             <div class="flex flex-row">
               {% if comment.attachment %}

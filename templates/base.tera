@@ -8,10 +8,11 @@
     </title>
     <link href="/static/bundle.css" rel="stylesheet"/> {% block meta %}{% endblock meta %}
     </head>
-    <body class="bg-blue-900 text-gray-50 font-nunito">
+    <body class="bg-blue-900 text-gray-50 font-nunito fixed w-full">
       <div class="bg-gray-900 h-10 flex flex-row flex-nowrap text-center">
-        <a class="ml-4" href="/">
-          <p class="my-2">Home</p>
+        <a class="px-2 flex flex-row hover:bg-gray-800" href="/">
+          <img alt="logo" class="h-8 w-8 my-1" src="/static/logo.png"/>
+          <p class="my-2 ml-1">Home</p>
         </a>
       </div>
       {% block content %}{% endblock content %}

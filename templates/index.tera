@@ -15,7 +15,7 @@
   <meta content="https://mxrr.dev/files/rustboard.png" name="twitter:image"/>
 {% endblock meta %}
 {% block content %}
-  <div class="flex flex-row flex-wrap text-center justify-evenly">
+  <div class="flex flex-row flex-wrap text-center justify-center">
     {% for thread in threads %}
       <div class="bg-gray-700 m-3 rounded-t-md group rounded-b-sm w-72 h-54 shadow-md border-solid border-2 border-gray-800 hover:border-gray-100 transition-colors">
         <a href={{ "/t/" ~ thread.uid }}>

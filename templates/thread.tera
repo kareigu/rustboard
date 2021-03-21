@@ -1,7 +1,21 @@
 {% extends "base" %}
 {% block title %}
-  {{ title }}
+  {{ title ~ " - Rustboard" }}
 {% endblock title %}
+{% block meta %}
+  <meta content="{{ content | truncate(length=45) }}" name="description"/>
+  <meta content={{ "https://rustboard.mxrr.dev/t/" ~ uid }} property="og:url"/>
+  <meta content="website" property="og:type"/>
+  <meta content="{{ title ~ " - Rustboard" }}" property="og:title"/>
+  <meta content="{{ content | truncate(length=45) }}" property="og:description"/>
+  <meta content="https://mxrr.dev/files/rustboard.png" property="og:image"/>
+  <meta content="summary_large_image" name="twitter:card"/>
+  <meta content="rustboard.mxrr.dev" property="twitter:domain"/>
+  <meta content={{ "https://rustboard.mxrr.dev/t/" ~ uid }} property="twitter:url"/>
+  <meta content="{{ title ~ " - Rustboard" }}" name="twitter:title"/>
+  <meta content="{{ content | truncate(length=45) }}" name="twitter:description"/>
+  <meta content="https://mxrr.dev/files/rustboard.png" name="twitter:image"/>
+{% endblock meta %}
 {% block content %}
   <div class="flex flex-col mx-24 my-8">
     <div class="bg-gray-800 rounded-md text-center">

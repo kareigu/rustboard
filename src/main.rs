@@ -23,6 +23,6 @@ fn main() {
       "/",
       routes![routes::index, routes::files, routes::ugc, routes::thread],
     )
-    .mount("/api/v1/", routes![v1::test])
+    .mount("/api/v1/", routes![v1::test, v1::users])
     .launch();
 }

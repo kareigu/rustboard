@@ -3,3 +3,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.btn-accent {
+  @apply
+  rounded-t-sm px-2 border-solid border-b-2 border-thread-accent-md bg-gray-900 text-gray-50 hover:bg-gray-700 hover:border-thread-accent-dk transition-colors
+}

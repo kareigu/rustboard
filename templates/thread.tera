@@ -3,9 +3,9 @@
   {{ title }}
 {% endblock title %}
 {% block content %}
-  <div class="flex flex-col mx-24 my-8 bg-indigo-900">
-    <div class="bg-red-900 rounded-md text-center">
-      <div class="bg-yellow-600 rounded-t-sm flex flex-row">
+  <div class="flex flex-col mx-24 my-8">
+    <div class="bg-gray-800 rounded-md text-center">
+      <div class="bg-thread-accent-md rounded-t-sm flex flex-row">
         <h3 class="mx-2">{{ uid }}</h3>
         <h2 class="ml-2">{{ title }}</h2>
         <p class="ml-auto mr-2">{{ post_time }}</p>
@@ -20,11 +20,11 @@
     {% if comments %}
       {% for comment in comments %}
         {% if comment.attachment %}
-          <div class="bg-red-900 rounded-md text-center my-2">
+          <div class="bg-gray-800 rounded-md text-center my-2">
           {% else %}
-            <div class="bg-red-900 rounded-md text-center my-2 h-44">
+            <div class="bg-gray-800 rounded-md text-center my-2 h-44">
             {% endif %}
-            <div class="bg-yellow-600 rounded-t-sm flex flex-row">
+            <div class="bg-thread-accent-md rounded-t-sm flex flex-row">
               <h2 class="mx-2">{{ comment.uid }}</h2>
               <p class="ml-auto mr-2">{{ comment.post_time }}</p>
             </div>

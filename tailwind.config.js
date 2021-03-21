@@ -5,7 +5,16 @@ module.exports = {
     fontFamily: {
       'nunito': ['Nunito']
     },
-    extend: {},
+    extend: {
+      colors: {
+        'main-dark-blue': '#0B0F19',
+        'thread-accent': {
+          'lt': '#FF7000',
+          'md': '#F64C00',
+          'dk': '#A93400'
+        }
+      }
+    },
   },
   variants: {
     extend: {},

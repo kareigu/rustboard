@@ -59,7 +59,7 @@ pub fn get_thread(db: &Dgraph, uid: String) -> types::Thread {
       attachment
     	content
       comment_count : count(comments)
-    	comments(orderdesc: post_time) {
+    	comments(orderasc: post_time) {
         uid
         content
         post_time

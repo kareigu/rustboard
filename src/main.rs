@@ -23,7 +23,13 @@ pub struct DbConn {
 #[get("/")]
 fn index(db: State<DbConn>) -> Template {
   let threads = db_fetch::get_threads(&db.db);
-  Template::render("index", threads)
+  Template::render("index", &threads)
+}
+
+#[get("/t/<thread>")]
+fn thread(db: State<DbConn>, thread: String) -> Template {
+  let thread = db_fetch::get_thread(&db.db, thread);
+  Template::render("thread", &thread)
 }
 
 #[get("/static/<file..>")]
@@ -37,8 +43,8 @@ fn ugc(file: PathBuf) -> Option<NamedFile> {
 }
 
 #[get("/json/test")]
-fn test(db: State<DbConn>) -> Json<Vec<db_fetch::types::Thread>> {
-  Json(db_fetch::get_threads(&db.db).threads)
+fn test(db: State<DbConn>) -> Json<db_fetch::types::Thread> {
+  Json(db_fetch::get_thread(&db.db, "0x272a".to_string()))
 }
 
 fn main() {
@@ -47,6 +53,6 @@ fn main() {
       db: make_dgraph!(dgraph::new_dgraph_client("localhost:9080")),
     })
     .attach(Template::fairing())
-    .mount("/", routes![index, files, test, ugc])
+    .mount("/", routes![index, files, test, ugc, thread])
     .launch();
 }

@@ -1,4 +1,4 @@
-{% extends "base.tera" %}
+{% extends "base" %}
 {% block title %}Rustboard{% endblock title %}
 {% block content %}
   <div class="flex flex-row flex-wrap text-center justify-evenly">

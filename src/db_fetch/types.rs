@@ -11,6 +11,11 @@ pub struct GetThreads {
 }
 
 #[derive(Serialize, Deserialize)]
+pub struct GetThread {
+  pub thread: Vec<Thread>,
+}
+
+#[derive(Serialize, Deserialize)]
 pub struct User {
   uid: Option<String>,
   username: Option<String>,
@@ -30,12 +35,12 @@ pub struct Comment {
 
 #[derive(Serialize, Deserialize)]
 pub struct Thread {
-  uid: Option<String>,
-  comment_count: Option<i32>,
-  comments: Option<Vec<Comment>>,
-  content: Option<String>,
-  post_time: Option<String>,
-  poster: Option<User>,
-  title: Option<String>,
-  attachment: Option<String>,
+  pub uid: Option<String>,
+  pub comment_count: Option<i32>,
+  pub comments: Option<Vec<Comment>>,
+  pub content: Option<String>,
+  pub post_time: Option<String>,
+  pub poster: Option<User>,
+  pub title: Option<String>,
+  pub attachment: Option<String>,
 }

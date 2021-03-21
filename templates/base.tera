@@ -8,6 +8,13 @@
     </title>
     <link href="/static/bundle.css" rel="stylesheet"/> {% block meta %}{% endblock meta %}
     </head>
-    <body class="bg-blue-900 text-gray-50"> {% block content %}{% endblock content %}
-      </body>
-    </html>
+    <body class="bg-blue-900 text-gray-50">
+      <div class="bg-gray-900 h-10 flex flex-row flex-nowrap text-center">
+        <a class="ml-4" href="/">
+          <p class="my-2">Home</p>
+        </a>
+      </div>
+      {% block content %}{% endblock content %}
+    </body>
+  </html>
+</body></html>

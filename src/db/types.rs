@@ -1,5 +1,9 @@
 use serde::{Deserialize, Serialize};
 
+pub struct DbConn {
+  pub db: dgraph::Dgraph,
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct GetUsers {
   pub query: Vec<User>,

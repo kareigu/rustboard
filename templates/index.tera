@@ -17,9 +17,9 @@
 {% block content %}
   <div class="flex flex-row flex-wrap text-center justify-evenly">
     {% for thread in threads %}
-      <div class="bg-gray-700 m-3 rounded-t-md rounded-b-sm w-72 h-54 shadow-md border-solid border-2 border-gray-800 hover:border-gray-100 transition-colors">
+      <div class="bg-gray-700 m-3 rounded-t-md group rounded-b-sm w-72 h-54 shadow-md border-solid border-2 border-gray-800 hover:border-gray-100 transition-colors">
         <a href={{ "/t/" ~ thread.uid }}>
-          <div class="bg-thread-accent-md rounded-t-md shadow-lg">
+          <div class="bg-thread-accent-md font-bold visited:text-thread-accent-dk text-thread-link group-hover:text-thread-accent-lt rounded-t-md shadow-lg">
             <h3>{{ thread.title }}</h3>
           </div>
           <p>{{ thread.post_time | date(format="%B %d, %Y, %H:%M:%S") }}</p>

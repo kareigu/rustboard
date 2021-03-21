@@ -13,6 +13,9 @@ module.exports = {
           'md': '#F64C00',
           'dk': '#A93400'
         }
+      },
+      textColor: {
+        'thread-link': '#234099'
       }
     },
   },

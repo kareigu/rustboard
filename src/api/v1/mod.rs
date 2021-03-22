@@ -23,11 +23,14 @@ pub fn threads(db: State<DbConn>) -> Json<GetThreads> {
 }
 
 #[post("/comment", data = "<comment>")]
-pub async fn new_comment(mut comment: Form<types::NewComment<'_>>) -> std::io::Result<String> {
+pub async fn new_comment(
+  mut comment: Form<types::NewComment<'_>>,
+  db: State<'_, DbConn>,
+) -> std::io::Result<String> {
   let attachment = utils::write_attachment(&mut comment.attachment).await?;
 
   println!("Thread: {}", comment.thread);
-  println!("Filename: {}", attachment.filename);
+  println!("Attachment: {}", attachment.unwrap().filename);
   println!("Content: {}", comment.content);
   Ok("Comment received".to_string())
 }

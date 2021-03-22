@@ -4,7 +4,7 @@ use dgraph::Dgraph;
 use std::collections::HashMap;
 
 pub fn get_users(db: &Dgraph) -> Vec<types::User> {
-  let q = r#"{
+  /*let q = r#"{
     query(func: type(user)) {
       uid
       username
@@ -27,6 +27,14 @@ pub fn get_users(db: &Dgraph) -> Vec<types::User> {
         }
       }
     }
+  }"#;*/
+
+  let q = r#"{
+    query(func: type(User)) {
+      uid
+      username
+      valid_pwd : checkpwd(password, "asd123")
+    }
   }"#;
 
   let resp = db.new_readonly_txn().query(q).expect("GetUsers Query");
@@ -40,7 +48,10 @@ pub fn get_threads(db: &Dgraph) -> types::GetThreads {
       uid
       title
       post_time
-      attachment
+      attachment {
+        filename
+        content_type
+      }
       comment_count : count(comments)
     }
   }"#;

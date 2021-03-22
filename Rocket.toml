@@ -1,2 +1,4 @@
 [global]
 port = 5054
+limits.file = "10MiB"
+limits.data-form = "12MiB"

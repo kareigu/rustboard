@@ -1568,6 +1568,7 @@ name = "rustboard"
 version = "0.1.0"
 dependencies = [
  "dgraph",
+ "rand 0.8.3",
  "rocket",
  "rocket_contrib",
  "serde",

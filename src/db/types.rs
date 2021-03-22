@@ -34,7 +34,7 @@ pub struct Comment {
   content: Option<String>,
   post_time: Option<String>,
   poster: Option<User>,
-  attachment: Option<String>,
+  attachment: Option<Attachment>,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -46,5 +46,11 @@ pub struct Thread {
   pub post_time: Option<String>,
   pub poster: Option<User>,
   pub title: Option<String>,
-  pub attachment: Option<String>,
+  pub attachment: Option<Attachment>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Attachment {
+  pub filename: String,
+  pub content_type: String,
 }

@@ -24,7 +24,9 @@
           </div>
           <p>{{ thread.post_time | date(format="%B %d, %Y, %H:%M:%S") }}</p>
           <div class="flex flex-row justify-center text-center m-auto">
-            <img alt="attachment" class="bg-gray-900 p-1 w-32 h-32 shadow-md border-solid border-2 border-gray-800" src={{ "/files/" ~ thread.attachment }}/>
+            {% if thread.attachment %}
+              <img alt="attachment" class="bg-gray-900 p-1 w-32 h-32 shadow-md border-solid border-2 border-gray-800" src={{ "/files/" ~ thread.attachment.filename }}/>
+            {% endif %}
           </div>
           <p>UID: {{ thread.uid }}</p>
           <div class="bg-thread-accent-dk rounded-b-sm">

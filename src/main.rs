@@ -24,5 +24,8 @@ fn rocket() -> rocket::Rocket {
       "/",
       routes![routes::index, routes::files, routes::ugc, routes::thread],
     )
-    .mount("/api/v1/", routes![v1::test, v1::users, v1::new_comment])
+    .mount(
+      "/api/v1/",
+      routes![v1::test, v1::users, v1::new_comment, v1::threads],
+    )
 }

@@ -1,10 +1,11 @@
 use crate::db;
-use crate::db::types::{DbConn, Thread, User};
+use crate::db::types::{Attachment, DbConn, GetThreads, Thread, User};
 use rocket::form::Form;
 use rocket::State;
 use rocket_contrib::json::Json;
 
 mod types;
+mod utils;
 
 #[get("/test")]
 pub fn test(db: State<DbConn>) -> Json<Thread> {
@@ -16,10 +17,17 @@ pub fn users(db: State<DbConn>) -> Json<Vec<User>> {
   Json(db::get_users(&db.db))
 }
 
+#[get("/threads")]
+pub fn threads(db: State<DbConn>) -> Json<GetThreads> {
+  Json(db::get_threads(&db.db))
+}
+
 #[post("/comment", data = "<comment>")]
-pub fn new_comment(db: State<DbConn>, comment: Form<types::NewComment>) -> &'static str {
+pub async fn new_comment(mut comment: Form<types::NewComment<'_>>) -> std::io::Result<String> {
+  let attachment = utils::write_attachment(&mut comment.attachment).await?;
+
   println!("Thread: {}", comment.thread);
-  println!("Attachment: {}", comment.attachment);
+  println!("Filename: {}", attachment.filename);
   println!("Content: {}", comment.content);
-  "Comment received"
+  Ok("Comment received".to_string())
 }

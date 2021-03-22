@@ -2,6 +2,8 @@ services:
   zero:
     image: dgraph/dgraph:latest
     container_name: dgraph_zero
+    volumes:
+      - ./dgraph:/dgraph
     ports:
       - 5080:5080
       - 6080:6080
@@ -11,7 +13,7 @@ services:
     image: dgraph/dgraph:latest
     container_name: dgraph_alpha
     volumes:
-      - ~/dgraph:/dgraph
+      - ./dgraph:/dgraph
     ports:
       - 8080:8080
       - 9080:9080

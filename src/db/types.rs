@@ -33,6 +33,7 @@ pub struct Comment {
   uid: Option<String>,
   content: Option<String>,
   post_time: Option<String>,
+  thread: Option<Thread>,
   poster: Option<User>,
   attachment: Option<Attachment>,
 }

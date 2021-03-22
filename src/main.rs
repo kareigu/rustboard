@@ -13,7 +13,8 @@ mod api;
 use api::v1;
 mod routes;
 
-fn main() {
+#[launch]
+fn rocket() -> rocket::Rocket {
   rocket::ignite()
     .manage(DbConn {
       db: make_dgraph!(dgraph::new_dgraph_client("localhost:9080")),
@@ -24,5 +25,4 @@ fn main() {
       routes![routes::index, routes::files, routes::ugc, routes::thread],
     )
     .mount("/api/v1/", routes![v1::test, v1::users, v1::new_comment])
-    .launch();
 }

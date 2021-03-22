@@ -19,11 +19,11 @@ pub fn thread(db: State<DbConn>, thread: String) -> Template {
 }
 
 #[get("/static/<file..>")]
-pub fn files(file: PathBuf) -> Option<NamedFile> {
-  NamedFile::open(Path::new("static/").join(file)).ok()
+pub async fn files(file: PathBuf) -> Option<NamedFile> {
+  NamedFile::open(Path::new("static/").join(file)).await.ok()
 }
 
 #[get("/files/<file..>")]
-pub fn ugc(file: PathBuf) -> Option<NamedFile> {
-  NamedFile::open(Path::new("files/").join(file)).ok()
+pub async fn ugc(file: PathBuf) -> Option<NamedFile> {
+  NamedFile::open(Path::new("files/").join(file)).await.ok()
 }

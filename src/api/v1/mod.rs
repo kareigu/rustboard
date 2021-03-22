@@ -1,6 +1,6 @@
 use crate::db;
 use crate::db::types::{DbConn, Thread, User};
-use rocket::request::Form;
+use rocket::form::Form;
 use rocket::State;
 use rocket_contrib::json::Json;
 

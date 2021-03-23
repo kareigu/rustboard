@@ -22,7 +22,13 @@ fn rocket() -> rocket::Rocket {
     .attach(Template::fairing())
     .mount(
       "/",
-      routes![routes::index, routes::files, routes::ugc, routes::thread],
+      routes![
+        routes::index,
+        routes::files,
+        routes::ugc,
+        routes::thread,
+        routes::post_thread
+      ],
     )
     .mount(
       "/api/v1/",

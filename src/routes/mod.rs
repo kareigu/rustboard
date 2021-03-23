@@ -27,3 +27,14 @@ pub async fn files(file: PathBuf) -> Option<NamedFile> {
 pub async fn ugc(file: PathBuf) -> Option<NamedFile> {
   NamedFile::open(Path::new("files/").join(file)).await.ok()
 }
+
+#[get("/post")]
+pub fn post_thread() -> Template {
+  #[derive(serde::Serialize)]
+  struct Temp {
+    num: i32,
+  }
+
+  let temp = Temp { num: 2 };
+  Template::render("create_thread", &temp)
+}

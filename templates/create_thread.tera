@@ -1,0 +1,32 @@
+{% extends "base" %}
+{% block title %}Rustboard{% endblock title %}
+{% block meta %}
+  <meta content="Imageboard built using rocket.rs, tera and dgraph" name="description"/>
+  <meta content="https://rustboard.mxrr.dev" property="og:url"/>
+  <meta content="website" property="og:type"/>
+  <meta content="Rustboard" property="og:title"/>
+  <meta content="Imageboard built using rocket.rs, tera and dgraph" property="og:description"/>
+  <meta content="https://mxrr.dev/files/rustboard.png" property="og:image"/>
+  <meta content="summary_large_image" name="twitter:card"/>
+  <meta content="mxrr.dev" property="twitter:domain"/>
+  <meta content="https://rustboard.mxrr.dev" property="twitter:url"/>
+  <meta content="Rustboard" name="twitter:title"/>
+  <meta content="Imageboard built using rocket.rs, tera and dgraph" name="twitter:description"/>
+  <meta content="https://mxrr.dev/files/rustboard.png" name="twitter:image"/>
+{% endblock meta %}
+{% block content %}
+  <div class="flex flex-row flex-wrap text-center justify-center mt-3">
+    <div class="bg-gray-800 rounded-md w-6/12 text-center my-2 border-t-2 border-solid border-thread-accent-md" id="post">
+      <form action="/api/v1/thread" enctype="multipart/form-data" id="post-thread" method="post">
+        <input class="mt-3 h-6 w-11/12 text-gray-100 bg-gray-700 text-left px-3" placeholder="Title" type="text"/>
+        <div class="w-11/12 h-10 bg-gray-700 mx-auto mt-3 text-left">
+          <input accept=".3gp,.aac,.flac,.gif,.jpg,.jpeg,.jfif,.m4a,.mov,.mp3,.mp4,.png,.webm,.webp" class="ml-3 mt-2 h-6" data-max-size="1610612736" name="attachment" type="file"/>
+        </div>
+        <textarea class="mt-3 h-24 w-11/12 text-gray-100 bg-gray-700 text-left px-3" maxlength="8000" name="content" placeholder="Message"></textarea>
+        <div class="mb-2">
+          <input class="btn-accent" type="submit" value="Post"/>
+        </div>
+      </form>
+    </div>
+  </div>
+{% endblock content %}

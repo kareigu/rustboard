@@ -115,7 +115,7 @@ pub fn add_comment(db: &Dgraph, comment: Form<NewComment>, attachment: Option<ty
   _:new_comment <dgraph.type> "Comment" .
   <{thread}> <comments> _:new_comment .
   "#,
-    content = comment.content,
+    content = comment.content.escape_default(),
     thread = comment.thread,
     poster_uid = 0x2731,
     post_time = utils::get_curr_timestamp()
@@ -158,8 +158,8 @@ pub fn add_thread(db: &Dgraph, thread: Form<NewThread>, attachment: Option<types
   _:new_thread <title> "{title}" .
   _:new_thread <dgraph.type> "Thread" .
   "#,
-    content = thread.content,
-    title = thread.title,
+    content = thread.content.escape_default(),
+    title = thread.title.escape_default(),
     poster_uid = 0x2731,
     post_time = utils::get_curr_timestamp()
   );

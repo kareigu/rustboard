@@ -1,0 +1,60 @@
+<attachment>: uid .
+<comment>: uid .
+<comments>: [uid] @count .
+<content>: string @index(fulltext) .
+<content_type>: string .
+<dgraph.cors>: [string] @index(exact) @upsert .
+<dgraph.drop.op>: string .
+<dgraph.graphql.p_query>: string .
+<dgraph.graphql.p_sha256hash>: string @index(exact) .
+<dgraph.graphql.schema>: string .
+<dgraph.graphql.schema_created_at>: datetime .
+<dgraph.graphql.schema_history>: string .
+<dgraph.graphql.xid>: string @index(exact) @upsert .
+<filename>: string .
+<password>: password .
+<post_time>: datetime @index(hour) .
+<poster>: uid .
+<thread>: uid .
+<threads>: [uid] @count .
+<title>: string @index(fulltext) .
+<uid_val>: int .
+<username>: string .
+<val>: uid .
+type <Attachment> {
+	content_type
+	filename
+}
+type <Comment> {
+	attachment
+	content
+	post_time
+	poster
+	thread
+}
+type <Thread> {
+	attachment
+	comments
+	poster
+	post_time
+	content
+	title
+}
+type <User> {
+	password
+	username
+	comments
+	threads
+}
+type <dgraph.graphql> {
+	dgraph.graphql.schema
+	dgraph.graphql.xid
+}
+type <dgraph.graphql.history> {
+	dgraph.graphql.schema_history
+	dgraph.graphql.schema_created_at
+}
+type <dgraph.graphql.persisted_query> {
+	dgraph.graphql.p_query
+	dgraph.graphql.p_sha256hash
+}

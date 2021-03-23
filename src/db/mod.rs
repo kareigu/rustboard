@@ -1,4 +1,5 @@
 pub mod types;
+mod utils;
 
 use crate::api::v1::types::NewComment;
 use dgraph::Dgraph;
@@ -105,8 +106,6 @@ pub fn get_thread(db: &Dgraph, uid: String) -> types::Thread {
 pub fn add_comment(db: &Dgraph, comment: Form<NewComment>, attachment: Option<types::Attachment>) {
   let mut txn = db.new_txn();
 
-  let now = chrono::Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true);
-
   let mut q = format!(
     r#"
   _:new_comment <content> "{content}" .
@@ -119,7 +118,7 @@ pub fn add_comment(db: &Dgraph, comment: Form<NewComment>, attachment: Option<ty
     content = comment.content,
     thread = comment.thread,
     poster_uid = 0x2731,
-    post_time = now
+    post_time = utils::get_curr_timestamp()
   );
 
   match attachment {

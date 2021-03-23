@@ -1,4 +1,5 @@
 {% extends "base" %}
+{% import "macros" as macros %}
 {% block title %}
   {{ title | escape | truncate(length=55) }}
 {% endblock title %}
@@ -27,7 +28,7 @@
         <p class="ml-auto mr-2">{{ post_time | date(format="%B %d, %Y, %H:%M:%S") }}</p>
       </div>
       <div class="flex flex-row">
-        <img alt="attachment" class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" {% if attachment %} src="{{ "/files/" ~ attachment.filename }}" {% else %} src=" /static/logo.png" {% endif %}/>
+        {{ macros::media(attachment=attachment) }}
         <p class=" mx-3 break-all">{{ content | truncate(length=1100) }}</p>
       </div>
     </div>
@@ -42,7 +43,7 @@
           </div>
           <div class="flex flex-row text-left">
             {% if comment.attachment %}
-              <img alt="attachment" class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" src={{ "/files/" ~ comment.attachment.filename }}/>
+              {{ macros::media(attachment=comment.attachment) }}
             {% endif %}
             <p class="mx-3 break-all">{{ comment.content | truncate(length=1100) }}</p>
           </div>

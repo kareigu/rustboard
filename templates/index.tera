@@ -1,4 +1,5 @@
 {% extends "base" %}
+{% import "macros" as macros %}
 {% block title %}Rustboard{% endblock title %}
 {% block meta %}
   <meta content="Imageboard built using rocket.rs, tera and dgraph" name="description"/>
@@ -27,7 +28,7 @@
           </div>
           <p>{{ thread.post_time | date(format="%B %d, %Y, %H:%M:%S") }}</p>
           <div class="flex flex-row justify-center text-center m-auto">
-            <img alt="attachment" class="bg-gray-900 p-1 w-32 h-32 shadow-md border-solid border-2 border-gray-800" {% if thread.attachment %} src="{{ "/files/" ~ thread.attachment.filename }}" {% else %} src=" /static/logo.png" {% endif %}/>
+            {{ macros::media(attachment=thread.attachment) }}
           </div>
           <p>UID: {{ thread.uid }}</p>
           <div class="bg-thread-accent-dk rounded-b-sm">

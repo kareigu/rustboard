@@ -35,37 +35,33 @@
     </div>
     {% if comments %}
       {% for comment in comments %}
-        {% if comment.attachment %}
-          <div class="bg-gray-800 rounded-md text-center my-2" id={{ comment.uid }}>
-          {% else %}
-            <div class="bg-gray-800 rounded-md text-center my-2 h-44">
+        <div class="bg-gray-800 rounded-md text-center my-2 {% if not comment.attachment %} h-44 {% endif %}" id="{{ comment.uid }}">
+          <div class="bg-thread-accent-md rounded-t-sm flex flex-row">
+            <a class="text-thread-link hover:text-thread-accent-lt font-bold" href={{ "#" ~ comment.uid }}>
+              <h2 class="mx-2">{{ comment.uid }}</h2>
+            </a>
+            <p class="ml-auto mr-2">{{ comment.post_time | date(format="%B %d, %Y, %H:%M:%S") }}</p>
+          </div>
+          <div class="flex flex-row text-left">
+            {% if comment.attachment %}
+              <img alt="attachment" class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" src={{ "/files/" ~ comment.attachment.filename }}/>
             {% endif %}
-            <div class="bg-thread-accent-md rounded-t-sm flex flex-row">
-              <a class="text-thread-link hover:text-thread-accent-lt font-bold" href={{ "#" ~ comment.uid }}>
-                <h2 class="mx-2">{{ comment.uid }}</h2>
-              </a>
-              <p class="ml-auto mr-2">{{ comment.post_time | date(format="%B %d, %Y, %H:%M:%S") }}</p>
-            </div>
-            <div class="flex flex-row text-left">
-              {% if comment.attachment %}
-                <img alt="attachment" class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" src={{ "/files/" ~ comment.attachment.filename }}/>
-              {% endif %}
-              <p class="mx-3 break-all">{{ comment.content }}</p>
-            </div>
+            <p class="mx-3 break-all">{{ comment.content }}</p>
           </div>
-        {% endfor %}
-      {% endif %}
-      <div class="bg-gray-800 rounded-md text-center my-2 border-t-2 border-solid border-thread-accent-md" id="reply">
-        <form action="/api/v1/comment" enctype="multipart/form-data" id="post-comment" method="post">
-          <input name="thread" type="hidden" value="{{ uid }}"/>
-          <div class="w-11/12 h-10 bg-gray-700 mx-auto mt-3 text-left">
-            <input accept=".3gp,.aac,.flac,.gif,.jpg,.jpeg,.jfif,.m4a,.mov,.mp3,.mp4,.png,.webm,.webp" class="ml-3 mt-2 h-6" data-max-size="1610612736" name="attachment" type="file"/>
-          </div>
-          <textarea class="mt-3 h-24 w-11/12 text-gray-100 bg-gray-700 text-left px-3" maxlength="8000" name="content" placeholder="Message"></textarea>
-          <div class="mb-2">
-            <input class="btn-accent" type="submit" value="Reply"/>
-          </div>
-        </form>
-      </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+    <div class="bg-gray-800 rounded-md text-center my-2 border-t-2 border-solid border-thread-accent-md" id="reply">
+      <form action="/api/v1/comment" enctype="multipart/form-data" id="post-comment" method="post">
+        <input name="thread" type="hidden" value="{{ uid }}"/>
+        <div class="w-11/12 h-10 bg-gray-700 mx-auto mt-3 text-left">
+          <input accept=".3gp,.aac,.flac,.gif,.jpg,.jpeg,.jfif,.m4a,.mov,.mp3,.mp4,.png,.webm,.webp" class="ml-3 mt-2 h-6" data-max-size="1610612736" name="attachment" type="file"/>
+        </div>
+        <textarea class="mt-3 h-24 w-11/12 text-gray-100 bg-gray-700 text-left px-3" maxlength="8000" name="content" placeholder="Message"></textarea>
+        <div class="mb-2">
+          <input class="btn-accent" type="submit" value="Reply"/>
+        </div>
+      </form>
     </div>
-  {% endblock content %}
+  </div>
+{% endblock content %}

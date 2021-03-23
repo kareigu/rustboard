@@ -20,7 +20,7 @@
   <div class="flex flex-col mx-24 my-8">
     <div class="bg-gray-800 rounded-md text-center">
       <div class="bg-thread-accent-md rounded-t-sm flex flex-row">
-        <a class="flex flex-row text-thread-link hover:text-thread-accent-lt font-bold" href="#">
+        <a class="flex flex-row text-thread-link hover:text-thread-accent-lt font-bold" href="#" title="{{ title | escape }}">
           <h3 class="mx-2">{{ uid }}</h3>
           <h2 class="ml-2">{{ title | truncate(length=42) }}</h2>
         </a>

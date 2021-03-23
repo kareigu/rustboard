@@ -28,7 +28,7 @@
       </div>
       <div class="flex flex-row">
         <img alt="attachment" class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" {% if attachment %} src="{{ "/files/" ~ attachment.filename }}" {% else %} src=" /static/logo.png" {% endif %}/>
-        <p class=" mx-3 break-all">{{ content }}</p>
+        <p class=" mx-3 break-all">{{ content | truncate(length=1100) }}</p>
       </div>
     </div>
     {% if comments %}
@@ -44,7 +44,7 @@
             {% if comment.attachment %}
               <img alt="attachment" class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" src={{ "/files/" ~ comment.attachment.filename }}/>
             {% endif %}
-            <p class="mx-3 break-all">{{ comment.content }}</p>
+            <p class="mx-3 break-all">{{ comment.content | truncate(length=1100) }}</p>
           </div>
         </div>
       {% endfor %}

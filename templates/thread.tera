@@ -27,10 +27,8 @@
         <p class="ml-auto mr-2">{{ post_time | date(format="%B %d, %Y, %H:%M:%S") }}</p>
       </div>
       <div class="flex flex-row">
-        {% if attachment %}
-          <img alt="attachment" class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" src={{ "/files/" ~ attachment.filename }}/>
-        {% endif %}
-        <p class="mx-3">{{ content }}</p>
+        <img alt="attachment" class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" {% if attachment %} src="{{ "/files/" ~ attachment.filename }}" {% else %} src=" /static/logo.png" {% endif %}/>
+        <p class=" mx-3">{{ content }}</p>
       </div>
     </div>
     {% if comments %}

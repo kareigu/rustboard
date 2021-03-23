@@ -1,7 +1,7 @@
 pub mod types;
 mod utils;
 
-use crate::api::v1::types::NewComment;
+use crate::api::v1::types::{NewComment, NewThread};
 use dgraph::Dgraph;
 use rocket::form::Form;
 use std::collections::HashMap;
@@ -112,7 +112,7 @@ pub fn add_comment(db: &Dgraph, comment: Form<NewComment>, attachment: Option<ty
   _:new_comment <poster> <{poster_uid}> .
   _:new_comment <post_time> "{post_time}" .
   _:new_comment <thread> <{thread}> .
-  _:new_comment <dgraph.type> "comment" .
+  _:new_comment <dgraph.type> "Comment" .
   <{thread}> <comments> _:new_comment .
   "#,
     content = comment.content,
@@ -128,6 +128,49 @@ pub fn add_comment(db: &Dgraph, comment: Form<NewComment>, attachment: Option<ty
       _:new_attachment <filename> "{filename}" .
       _:new_attachment <content_type> "{content_type}" .
       _:new_comment <attachment> _:new_attachment .
+    "#,
+        filename = a.filename,
+        content_type = a.content_type
+      )
+      .as_str(),
+    ),
+    None => println!("No attachment"),
+  }
+
+  let mut m = dgraph::Mutation::new();
+  m.set_set_nquads(q.into());
+
+  let assigned = txn.mutate(m).expect("failed to create data");
+  for (key, val) in assigned.uids.iter() {
+    println!("\t{} => {}", key, val);
+  }
+  txn.commit().expect("Transaction committed");
+}
+
+pub fn add_thread(db: &Dgraph, thread: Form<NewThread>, attachment: Option<types::Attachment>) {
+  let mut txn = db.new_txn();
+
+  let mut q = format!(
+    r#"
+  _:new_thread <content> "{content}" .
+  _:new_thread <poster> <{poster_uid}> .
+  _:new_thread <post_time> "{post_time}" .
+  _:new_thread <title> "{title}" .
+  _:new_thread <dgraph.type> "Thread" .
+  "#,
+    content = thread.content,
+    title = thread.title,
+    poster_uid = 0x2731,
+    post_time = utils::get_curr_timestamp()
+  );
+
+  match attachment {
+    Some(a) => q.push_str(
+      format!(
+        r#"
+      _:new_attachment <filename> "{filename}" .
+      _:new_attachment <content_type> "{content_type}" .
+      _:new_thread <attachment> _:new_attachment .
     "#,
         filename = a.filename,
         content_type = a.content_type

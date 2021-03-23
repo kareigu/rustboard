@@ -33,3 +33,14 @@ pub async fn new_comment(
 
   Ok("Comment received".to_string())
 }
+
+#[post("/thread", data = "<thread>")]
+pub async fn new_thread(
+  mut thread: Form<types::NewThread<'_>>,
+  db: State<'_, DbConn>,
+) -> std::io::Result<String> {
+  let attachment = utils::write_attachment(&mut thread.attachment).await?;
+
+  db::add_thread(&db.db, thread, attachment);
+  Ok("Thread received".to_string())
+}

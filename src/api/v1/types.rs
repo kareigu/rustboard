@@ -7,3 +7,10 @@ pub struct NewComment<'f> {
   pub attachment: TempFile<'f>,
   pub content: String,
 }
+
+#[derive(FromForm)]
+pub struct NewThread<'f> {
+  pub title: String,
+  pub attachment: TempFile<'f>,
+  pub content: String,
+}

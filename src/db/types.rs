@@ -1,4 +1,3 @@
-use dgraph::Value;
 use serde::{Deserialize, Serialize};
 
 pub struct DbConn {
@@ -55,14 +54,4 @@ pub struct Thread {
 pub struct Attachment {
   pub filename: String,
   pub content_type: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct MutComment {
-  pub uid: String,
-  pub content: String,
-  pub post_time: String,
-  pub thread: Value,
-  pub poster: Value,
-  pub attachment: Option<Attachment>,
 }

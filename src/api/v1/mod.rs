@@ -1,5 +1,5 @@
 use crate::db;
-use crate::db::types::{Attachment, DbConn, GetThreads, MutComment, Thread, User};
+use crate::db::types::{DbConn, GetThreads, Thread, User};
 use rocket::form::Form;
 use rocket::State;
 use rocket_contrib::json::Json;

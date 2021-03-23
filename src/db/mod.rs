@@ -103,7 +103,11 @@ pub fn get_thread(db: &Dgraph, uid: String) -> types::Thread {
   thread
 }
 
-pub fn add_comment(db: &Dgraph, comment: Form<NewComment>, attachment: Option<types::Attachment>) {
+pub fn add_comment(
+  db: &Dgraph,
+  comment: &Form<NewComment>,
+  attachment: Option<types::Attachment>,
+) -> String {
   let mut txn = db.new_txn();
 
   let mut q = format!(
@@ -141,13 +145,25 @@ pub fn add_comment(db: &Dgraph, comment: Form<NewComment>, attachment: Option<ty
   m.set_set_nquads(q.into());
 
   let assigned = txn.mutate(m).expect("failed to create data");
+  txn.commit().expect("Transaction committed");
+
+  let mut new_comment_uid: String = "".to_string();
+
   for (key, val) in assigned.uids.iter() {
     println!("\t{} => {}", key, val);
+    if key == "new_comment" {
+      new_comment_uid = val.clone();
+    }
   }
-  txn.commit().expect("Transaction committed");
+
+  new_comment_uid
 }
 
-pub fn add_thread(db: &Dgraph, thread: Form<NewThread>, attachment: Option<types::Attachment>) {
+pub fn add_thread(
+  db: &Dgraph,
+  thread: Form<NewThread>,
+  attachment: Option<types::Attachment>,
+) -> String {
   let mut txn = db.new_txn();
 
   let mut q = format!(
@@ -184,8 +200,15 @@ pub fn add_thread(db: &Dgraph, thread: Form<NewThread>, attachment: Option<types
   m.set_set_nquads(q.into());
 
   let assigned = txn.mutate(m).expect("failed to create data");
+  txn.commit().expect("Transaction committed");
+
+  let mut new_thread_uid: String = "".to_string();
+
   for (key, val) in assigned.uids.iter() {
     println!("\t{} => {}", key, val);
+    if key == "new_thread" {
+      new_thread_uid = val.clone();
+    }
   }
-  txn.commit().expect("Transaction committed");
+  new_thread_uid
 }

@@ -1,6 +1,7 @@
 use crate::db;
 use crate::db::types::{DbConn, GetThreads, Thread, User};
 use rocket::form::Form;
+use rocket::response::Redirect;
 use rocket::State;
 use rocket_contrib::json::Json;
 
@@ -26,21 +27,21 @@ pub fn threads(db: State<DbConn>) -> Json<GetThreads> {
 pub async fn new_comment(
   mut comment: Form<types::NewComment<'_>>,
   db: State<'_, DbConn>,
-) -> std::io::Result<String> {
+) -> std::io::Result<Redirect> {
   let attachment = utils::write_attachment(&mut comment.attachment).await?;
 
-  db::add_comment(&db.db, comment, attachment);
+  let _new_comment_uid = db::add_comment(&db.db, &comment, attachment);
 
-  Ok("Comment received".to_string())
+  Ok(Redirect::to(format!("/t/{}", comment.thread)))
 }
 
 #[post("/thread", data = "<thread>")]
 pub async fn new_thread(
   mut thread: Form<types::NewThread<'_>>,
   db: State<'_, DbConn>,
-) -> std::io::Result<String> {
+) -> std::io::Result<Redirect> {
   let attachment = utils::write_attachment(&mut thread.attachment).await?;
 
-  db::add_thread(&db.db, thread, attachment);
-  Ok("Thread received".to_string())
+  let new_thread_uid = db::add_thread(&db.db, thread, attachment);
+  Ok(Redirect::to(format!("/t/{}", new_thread_uid)))
 }

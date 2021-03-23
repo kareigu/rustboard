@@ -44,7 +44,7 @@ pub fn get_users(db: &Dgraph) -> Vec<types::User> {
 
 pub fn get_threads(db: &Dgraph) -> types::GetThreads {
   let q = r#"{
-    threads(func: type(thread), orderdesc: post_time) {
+    threads(func: type(Thread), orderdesc: post_time) {
       uid
       title
       post_time

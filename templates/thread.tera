@@ -28,7 +28,7 @@
       </div>
       <div class="flex flex-row">
         {% if attachment %}
-          <img alt="attachment" class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" src={{ "/files/" ~ attachment }}/>
+          <img alt="attachment" class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" src={{ "/files/" ~ attachment.filename }}/>
         {% endif %}
         <p class="mx-3">{{ content }}</p>
       </div>
@@ -48,7 +48,7 @@
             </div>
             <div class="flex flex-row text-left">
               {% if comment.attachment %}
-                <img alt="attachment" class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" src={{ "/files/" ~ attachment }}/>
+                <img alt="attachment" class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" src={{ "/files/" ~ comment.attachment.filename }}/>
               {% endif %}
               <p class="mx-3 break-all">{{ comment.content }}</p>
             </div>

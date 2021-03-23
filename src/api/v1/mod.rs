@@ -1,5 +1,5 @@
 use crate::db;
-use crate::db::types::{Attachment, DbConn, GetThreads, Thread, User};
+use crate::db::types::{Attachment, DbConn, GetThreads, MutComment, Thread, User};
 use rocket::form::Form;
 use rocket::State;
 use rocket_contrib::json::Json;
@@ -29,8 +29,46 @@ pub async fn new_comment(
 ) -> std::io::Result<String> {
   let attachment = utils::write_attachment(&mut comment.attachment).await?;
 
-  println!("Thread: {}", comment.thread);
-  println!("Attachment: {}", attachment.unwrap().filename);
-  println!("Content: {}", comment.content);
+  let mut txn = db.db.new_txn();
+
+  let mut q = format!(
+    r#"
+  _:new_comment <content> "{content}" .
+  _:new_comment <poster> <{poster_uid}> .
+  _:new_comment <post_time> "2019-04-11T01:45:00" .
+  _:new_comment <thread> <{thread}> .
+  _:new_comment <dgraph.type> "comment" .
+  <{thread}> <comments> _:new_comment .
+  "#,
+    content = comment.content,
+    thread = comment.thread,
+    poster_uid = 0x2731
+  );
+
+  match attachment {
+    Some(a) => q.push_str(
+      format!(
+        r#"
+      _:new_attachment <filename> "{filename}" .
+      _:new_attachment <content_type> "{content_type}" .
+      _:new_comment <attachment> _:new_attachment .
+    "#,
+        filename = a.filename,
+        content_type = a.content_type
+      )
+      .as_str(),
+    ),
+    None => println!("No attachment"),
+  }
+
+  let mut m = dgraph::Mutation::new();
+  m.set_set_nquads(q.into());
+
+  let assigned = txn.mutate(m).expect("failed to create data");
+  for (key, val) in assigned.uids.iter() {
+    println!("\t{} => {}", key, val);
+  }
+  txn.commit().expect("Transaction committed");
+
   Ok("Comment received".to_string())
 }

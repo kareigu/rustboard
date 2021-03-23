@@ -1,3 +1,4 @@
+use dgraph::Value;
 use serde::{Deserialize, Serialize};
 
 pub struct DbConn {
@@ -21,11 +22,11 @@ pub struct GetThread {
 
 #[derive(Serialize, Deserialize)]
 pub struct User {
-  uid: Option<String>,
-  username: Option<String>,
-  valid_pwd: Option<bool>,
-  comments: Option<Vec<Comment>>,
-  threads: Option<Vec<Thread>>,
+  pub uid: Option<String>,
+  pub username: Option<String>,
+  pub valid_pwd: Option<bool>,
+  pub comments: Option<Vec<Comment>>,
+  pub threads: Option<Vec<Thread>>,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -54,4 +55,14 @@ pub struct Thread {
 pub struct Attachment {
   pub filename: String,
   pub content_type: String,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct MutComment {
+  pub uid: String,
+  pub content: String,
+  pub post_time: String,
+  pub thread: Value,
+  pub poster: Value,
+  pub attachment: Option<Attachment>,
 }

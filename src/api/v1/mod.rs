@@ -31,18 +31,21 @@ pub async fn new_comment(
 
   let mut txn = db.db.new_txn();
 
+  let now = chrono::Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true);
+
   let mut q = format!(
     r#"
   _:new_comment <content> "{content}" .
   _:new_comment <poster> <{poster_uid}> .
-  _:new_comment <post_time> "2019-04-11T01:45:00" .
+  _:new_comment <post_time> "{post_time}" .
   _:new_comment <thread> <{thread}> .
   _:new_comment <dgraph.type> "comment" .
   <{thread}> <comments> _:new_comment .
   "#,
     content = comment.content,
     thread = comment.thread,
-    poster_uid = 0x2731
+    poster_uid = 0x2731,
+    post_time = now
   );
 
   match attachment {

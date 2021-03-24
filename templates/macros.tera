@@ -16,3 +16,17 @@
 <img alt="attachment" class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" src=" /static/logo.png" />
 {% endif %}
 {% endmacro media %}
+
+{% macro error(msg) %}
+<div class="bg-red-600 text-gray-100 h-6 w-64 absolute rounded-sm">
+  <p>{{msg}}</p>
+</div>
+{% endmacro error %}
+
+{% macro clean_uri() %}
+<script>
+  const uri = window.location.toString();
+  const clean_uri = uri.substring(0, uri.indexOf("?"));
+  window.history.replaceState({}, document.title, clean_uri);
+</script>
+{% endmacro clean_uri %}

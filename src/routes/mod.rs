@@ -5,6 +5,7 @@ use std::path::{Path, PathBuf};
 
 use crate::db;
 use crate::db::types::DbConn;
+mod utils;
 
 #[get("/")]
 pub fn index(db: State<DbConn>) -> Template {
@@ -41,13 +42,16 @@ pub async fn ugc(file: PathBuf) -> Option<NamedFile> {
   NamedFile::open(Path::new("files/").join(file)).await.ok()
 }
 
-#[get("/post")]
-pub fn post_thread() -> Template {
+#[get("/post?<err>")]
+pub fn post_thread(err: Option<usize>) -> Template {
   #[derive(serde::Serialize)]
-  struct Temp {
-    num: i32,
+  struct Context {
+    error_message: Option<String>,
   }
 
-  let temp = Temp { num: 2 };
-  Template::render("create_thread", &temp)
+  let context = Context {
+    error_message: utils::get_create_post_err_msg(err),
+  };
+
+  Template::render("create_thread", &context)
 }

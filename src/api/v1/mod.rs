@@ -10,7 +10,7 @@ mod utils;
 
 #[get("/test")]
 pub fn test(db: State<DbConn>) -> Json<Thread> {
-  Json(db::get_thread(&db.db, "0x272a".to_string()))
+  Json(db::get_thread(&db.db, "0x272a".to_string()).thread)
 }
 
 #[get("/users")]
@@ -30,9 +30,9 @@ pub async fn new_comment(
 ) -> std::io::Result<Redirect> {
   let attachment = utils::write_attachment(&mut comment.attachment).await?;
 
-  let _new_comment_uid = db::add_comment(&db.db, &comment, attachment);
+  let new_comment_uid = db::add_comment(&db.db, &comment, attachment);
 
-  Ok(Redirect::to(format!("/t/{}", comment.thread)))
+  Ok(Redirect::to(format!("/t/{}?reply={}", comment.thread, new_comment_uid)))
 }
 
 #[post("/thread", data = "<thread>")]

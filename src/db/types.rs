@@ -17,6 +17,12 @@ pub struct GetThreads {
 
 #[derive(Serialize, Deserialize)]
 pub struct GetThread {
+  pub reply: Option<String>,
+  pub thread: Thread,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct ThreadResp {
   pub thread: Vec<Thread>,
 }
 

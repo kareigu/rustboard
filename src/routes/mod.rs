@@ -15,18 +15,20 @@ pub fn index(db: State<DbConn>) -> Template {
   Template::render("index", &threads)
 }
 
-#[get("/t/<thread>")]
-pub fn thread(db: State<DbConn>, thread: String) -> Template {
-  let mut thread = db::get_thread(&db.db, thread);
-  thread.parse_texts();
+#[get("/t/<thread>?<reply>")]
+pub fn thread(db: State<DbConn>, thread: String, reply: String) -> Template {
+  let mut get_thread = db::get_thread(&db.db, thread);
+  get_thread.thread.parse_texts();
 
-  if let Some(comments) = &mut thread.comments {
+  if let Some(comments) = &mut get_thread.thread.comments {
     for c in comments {
       c.parse_texts();
     }
   }
 
-  Template::render("thread", &thread)
+  get_thread.reply = Some(reply);
+
+  Template::render("thread", &get_thread)
 }
 
 #[get("/static/<file..>")]

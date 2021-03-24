@@ -64,7 +64,7 @@ pub fn get_threads(db: &Dgraph) -> types::GetThreads {
   data
 }
 
-pub fn get_thread(db: &Dgraph, uid: String) -> types::Thread {
+pub fn get_thread(db: &Dgraph, uid: String) -> types::GetThread {
   let q = r#"query thread($a: string) {
     thread(func: uid($a)) {
       uid
@@ -94,13 +94,16 @@ pub fn get_thread(db: &Dgraph, uid: String) -> types::Thread {
     .new_readonly_txn()
     .query_with_vars(q, vars)
     .expect("GetThread Query");
-  let data: types::GetThread = serde_json::from_slice(&resp.json).expect("parsing");
+  let data: types::ThreadResp= serde_json::from_slice(&resp.json).expect("parsing");
   let thread = data
     .thread
     .into_iter()
     .next()
     .expect("Couldn't iterate over GetThread Vec");
-  thread
+  types::GetThread {
+    thread,
+    reply: None
+  }
 }
 
 pub fn add_comment(

@@ -146,19 +146,27 @@ pub fn add_comment(
   let mut m = dgraph::Mutation::new();
   m.set_set_nquads(q.into());
 
-  let assigned = txn.mutate(m).expect("failed to create data");
-  txn.commit().expect("Transaction committed");
+  match txn.mutate(m) {
+    Err(e) => { println!("{:?}", e); format!("reply&err=3") },
+    Ok(assigned) => {
+      match txn.commit() {
+        Err(e) => { println!("{:?}", e); format!("reply&err=3") },
+        Ok(_) => {
+          let mut new_comment_uid: String = "".to_string();
 
-  let mut new_comment_uid: String = "".to_string();
+          for (key, val) in assigned.uids.iter() {
+            println!("\t{} => {}", key, val);
+            if key == "new_comment" {
+              new_comment_uid = val.clone();
+            }
+          }
 
-  for (key, val) in assigned.uids.iter() {
-    println!("\t{} => {}", key, val);
-    if key == "new_comment" {
-      new_comment_uid = val.clone();
+          new_comment_uid
+        }
+      }
+
     }
   }
-
-  new_comment_uid
 }
 
 pub fn add_thread(
@@ -204,9 +212,7 @@ pub fn add_thread(
   let mut m = dgraph::Mutation::new();
   m.set_set_nquads(q.into());
 
-  let assigned_r = txn.mutate(m);
-
-  match assigned_r {
+  match txn.mutate(m) {
     Err(e) => { println!("{:?}", e); format!("post?err=3") },
     Ok(assigned) => {
       match txn.commit() {

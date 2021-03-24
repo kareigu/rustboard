@@ -31,9 +31,11 @@ pub async fn new_comment(
   let attachment_w = utils::write_attachment(&mut comment.attachment).await;
 
   if let Ok(attachment) = attachment_w {
-    let new_comment_uid = db::add_comment(&db.db, &comment, attachment);
-
-    Ok(Redirect::to(format!("/t/{}?reply={}", comment.thread, new_comment_uid)))
+    if comment.content.len() > 0 || attachment.is_some() {
+      Ok(Redirect::to(format!("/t/{}?reply={}", &comment.thread ,db::add_comment(&db.db, &comment, attachment))))
+    } else {
+      Ok(Redirect::to(format!("/t/{}?reply=reply&err=0", &comment.thread)))
+    }
   } else {
     Ok(Redirect::to(format!("/t/{}?reply=reply&err=2", comment.thread)))
   }

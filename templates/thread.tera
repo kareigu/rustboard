@@ -72,11 +72,9 @@
   </div>
 </div>
 <script>
-  {% if reply %}
   document.getElementById("{{reply}}").scrollIntoView();
-  const uri = window.location.toString();
-  const clean_uri = uri.substring(0, uri.indexOf("?"));
-  window.history.replaceState({}, document.title, clean_uri);
-  {% endif %}
 </script>
+{% if reply %}
+{{ macros:: clean_uri() }}
+{% endif %}
 {% endblock content %}

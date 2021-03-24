@@ -40,12 +40,19 @@ pub async fn new_thread(
   mut thread: Form<types::NewThread<'_>>,
   db: State<'_, DbConn>,
 ) -> std::io::Result<Redirect> {
-  if thread.title.len() > 0 {
-    let attachment = utils::write_attachment(&mut thread.attachment).await?;
+  let attachment_w = utils::write_attachment(&mut thread.attachment).await;
 
-    let new_thread_uid = db::add_thread(&db.db, thread, attachment);
-    Ok(Redirect::to(format!("/t/{}", new_thread_uid)))
+  if let Ok(attachment) = attachment_w {
+    if thread.title.len() > 0 {
+      
+
+      let new_thread_uid = db::add_thread(&db.db, thread, attachment);
+      Ok(Redirect::to(format!("/t/{}", new_thread_uid)))
+    } else {
+      Ok(Redirect::to("/post?err=0".to_string()))
+    }
   } else {
-    Ok(Redirect::to("/post?err=0".to_string()))
+    Ok(Redirect::to("/post?err=2".to_string()))
   }
+
 }

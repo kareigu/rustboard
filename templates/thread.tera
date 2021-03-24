@@ -28,8 +28,7 @@
         <p class="ml-auto mr-2">{{ post_time | date(format="%B %d, %Y, %H:%M:%S") }}</p>
       </div>
       <div class="flex flex-row">
-        {{ macros::media(attachment=attachment) }}
-        <p class=" mx-3 break-all">{{ content | truncate(length=1100) }}</p>
+        {{ macros::media(attachment=attachment) }} <pre class="font-nunito mx-2 break-all text-left whitespace-pre-wrap">{{ content | escape | truncate(length=1100) }}</pre>
       </div>
     </div>
     {% if comments %}
@@ -45,7 +44,7 @@
             {% if comment.attachment %}
               {{ macros::media(attachment=comment.attachment) }}
             {% endif %}
-            <p class="mx-3 break-all">{{ comment.content | truncate(length=1100) }}</p>
+            <pre class="font-nunito mx-2 break-all text-left whitespace-pre-wrap">{{ comment.content | escape | truncate(length=1100) }}</pre>
           </div>
         </div>
       {% endfor %}

@@ -44,8 +44,7 @@ pub async fn new_thread(
 
   if let Ok(attachment) = attachment_w {
     if thread.content.len() > 0 {
-      let new_thread_uid = db::add_thread(&db.db, thread, attachment);
-      Ok(Redirect::to(format!("/t/{}", new_thread_uid)))
+      Ok(Redirect::to(format!("/{}", db::add_thread(&db.db, thread, attachment))))
     } else {
       Ok(Redirect::to("/post?err=0".to_string()))
     }

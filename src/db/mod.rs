@@ -207,16 +207,25 @@ pub fn add_thread(
   let mut m = dgraph::Mutation::new();
   m.set_set_nquads(q.into());
 
-  let assigned = txn.mutate(m).expect("failed to create data");
-  txn.commit().expect("Transaction committed");
+  let assigned_r = txn.mutate(m);
 
-  let mut new_thread_uid: String = "".to_string();
+  match assigned_r {
+    Err(e) => { println!("{:?}", e); format!("post?err=3") },
+    Ok(assigned) => {
+      match txn.commit() {
+        Err(e) => { println!("{:?}", e); format!("post?err=3") },
+        Ok(_) => {
+          let mut new_thread_uid: String = "".to_string();
 
-  for (key, val) in assigned.uids.iter() {
-    println!("\t{} => {}", key, val);
-    if key == "new_thread" {
-      new_thread_uid = val.clone();
+          for (key, val) in assigned.uids.iter() {
+            println!("\t{} => {}", key, val);
+            if key == "new_thread" {
+              new_thread_uid = val.clone();
+            }
+          }
+          format!("t/{}", new_thread_uid)
+        }
+      }
     }
   }
-  new_thread_uid
 }

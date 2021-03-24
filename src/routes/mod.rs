@@ -16,7 +16,7 @@ pub fn index(db: State<DbConn>) -> Template {
 }
 
 #[get("/t/<thread>?<reply>")]
-pub fn thread(db: State<DbConn>, thread: String, reply: String) -> Template {
+pub fn thread(db: State<DbConn>, thread: String, reply: Option<String>) -> Template {
   let mut get_thread = db::get_thread(&db.db, thread);
   get_thread.thread.parse_texts();
 
@@ -26,7 +26,7 @@ pub fn thread(db: State<DbConn>, thread: String, reply: String) -> Template {
     }
   }
 
-  get_thread.reply = Some(reply);
+  get_thread.reply = reply;
 
   Template::render("thread", &get_thread)
 }

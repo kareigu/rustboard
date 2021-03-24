@@ -6,6 +6,7 @@ use std::path::{Path, PathBuf};
 use crate::db;
 use crate::db::types::DbConn;
 mod utils;
+mod context;
 
 #[get("/")]
 pub fn index(db: State<DbConn>) -> Template {
@@ -16,18 +17,26 @@ pub fn index(db: State<DbConn>) -> Template {
   Template::render("index", &threads)
 }
 
-#[get("/t/<thread>?<reply>")]
-pub fn thread(db: State<DbConn>, thread: String, reply: Option<String>) -> Template {
-  let mut get_thread = db::get_thread(&db.db, thread);
-  get_thread.thread.parse_texts();
+#[get("/t/<thread>?<reply>&<err>")]
+pub fn thread(db: State<DbConn>, thread: String, reply: Option<String>, err: Option<usize>) -> Template {
+  let mut thread = db::get_thread(&db.db, thread);
+  thread.parse_texts();
 
-  if let Some(comments) = &mut get_thread.thread.comments {
+  if let Some(comments) = &mut thread.comments {
     for c in comments {
       c.parse_texts();
     }
   }
 
-  get_thread.reply = reply;
+  println!("{:?}", err);
+
+  let get_thread = context::GetThreadContext {
+    reply,
+    error_message: utils::get_create_post_err_msg(err),
+    thread,
+  };
+
+  println!("{:?}", get_thread.error_message);
 
   Template::render("thread", &get_thread)
 }
@@ -44,12 +53,7 @@ pub async fn ugc(file: PathBuf) -> Option<NamedFile> {
 
 #[get("/post?<err>")]
 pub fn post_thread(err: Option<usize>) -> Template {
-  #[derive(serde::Serialize)]
-  struct Context {
-    error_message: Option<String>,
-  }
-
-  let context = Context {
+  let context = context::PostThreadContext {
     error_message: utils::get_create_post_err_msg(err),
   };
 

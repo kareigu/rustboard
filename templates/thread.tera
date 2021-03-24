@@ -30,8 +30,7 @@
     </div>
     <div class="flex flex-row">
       {{ macros::media(attachment=thread.attachment) }}
-      <pre
-        class="font-nunito mx-2 break-all text-left whitespace-pre-wrap">{{ thread.content | escape | truncate(length=1100) }}
+      <pre class="font-nunito mx-2 break-all text-left whitespace-pre-wrap">{{ thread.content | escape | truncate(length=1100) }}
       </pre>
     </div>
   </div>
@@ -49,14 +48,18 @@
       {% if comment.attachment %}
       {{ macros::media(attachment=comment.attachment) }}
       {% endif %}
-      <pre
-        class="font-nunito mx-2 break-all text-left whitespace-pre-wrap">{{ comment.content | escape | truncate(length=1100) }}
+      <pre class="font-nunito mx-2 break-all text-left whitespace-pre-wrap">{{ comment.content | escape | truncate(length=1100) }}
       </pre>
     </div>
   </div>
   {% endfor %}
   {% endif %}
   <div class="bg-gray-800 rounded-md text-center my-2 border-t-2 border-solid border-thread-accent-md" id="reply">
+    {% if error_message %}
+    <div class="flex flex-row justify-center">
+      {{ macros::error(msg = error_message) }}
+    </div>
+    {% endif %}
     <form action="/api/v1/comment" enctype="multipart/form-data" id="post-comment" method="post">
       <input name="thread" type="hidden" value="{{ thread.uid }}" />
       <div class="w-11/12 h-10 bg-gray-700 mx-auto mt-3 text-left">
@@ -75,6 +78,6 @@
   document.getElementById("{{reply}}").scrollIntoView();
 </script>
 {% if reply %}
-{{ macros:: clean_uri() }}
+{{ macros::clean_uri() }}
 {% endif %}
 {% endblock content %}

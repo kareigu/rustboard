@@ -64,7 +64,7 @@ pub fn get_threads(db: &Dgraph) -> types::GetThreads {
   data
 }
 
-pub fn get_thread(db: &Dgraph, uid: String) -> types::GetThread {
+pub fn get_thread(db: &Dgraph, uid: String) -> types::Thread {
   let q = r#"query thread($a: string) {
     thread(func: uid($a)) {
       uid
@@ -100,10 +100,7 @@ pub fn get_thread(db: &Dgraph, uid: String) -> types::GetThread {
     .into_iter()
     .next()
     .expect("Couldn't iterate over GetThread Vec");
-  types::GetThread {
-    thread,
-    reply: None
-  }
+  thread
 }
 
 pub fn add_comment(

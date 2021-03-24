@@ -172,7 +172,7 @@ pub fn add_thread(
   let mut txn = db.new_txn();
 
   let content = utils::encode_text_in_u16(&thread.content);
-  let title = utils::encode_text_in_u16(&thread.title);
+  let title = if thread.title.len() > 0 { utils::encode_text_in_u16(&thread.title) } else { content.clone() };
 
   let mut q = format!(
     r#"

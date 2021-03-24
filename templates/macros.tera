@@ -1,17 +1,18 @@
 {% macro media(attachment) %}
-  {% if attachment %}
-    {% if attachment.content_type is containing("video") %}
-      <video class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" controls preload="metadata">
-        <source src="{{ "/files/" ~ attachment.filename }}" type="{{ attachment.content_type }}"/>
-      </video>
-    {% elif attachment.content_type is containing("audio") %}
-      <audio class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" controls preload="metadata">
-        <source src="{{ "/files/" ~ attachment.filename }}" type="{{ attachment.content_type }}"/>
-      </audio>
-    {% else %}
-      <img alt="attachment" class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" src="{{ "/files/" ~ attachment.filename }}"/>
-    {% endif %}
-  {% else %}
-    <img alt="attachment" class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" src=" /static/logo.png"/>
-  {% endif %}
+{% if attachment %}
+{% if attachment.content_type is containing("video") %}
+<video class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" controls preload="metadata">
+  <source src="{{ "/files/" ~ attachment.filename }}" type="{{ attachment.content_type }}" />
+</video>
+{% elif attachment.content_type is containing("audio") %}
+<audio class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" controls preload="metadata">
+  <source src="{{ "/files/" ~ attachment.filename }}" type="{{ attachment.content_type }}" />
+</audio>
+{% else %}
+<img alt="attachment" class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm"
+  src="{{ "/files/" ~ attachment.filename }}" />
+{% endif %}
+{% else %}
+<img alt="attachment" class="h-44 w-44 p-3 bg-gray-900 rounded-r-sm shadow-sm" src=" /static/logo.png" />
+{% endif %}
 {% endmacro media %}

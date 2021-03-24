@@ -31,7 +31,8 @@
     <div class="flex flex-row">
       {{ macros::media(attachment=thread.attachment) }}
       <pre
-        class="font-nunito mx-2 break-all text-left whitespace-pre-wrap">{{ thread.content | escape | truncate(length=1100) }}</pre>
+        class="font-nunito mx-2 break-all text-left whitespace-pre-wrap">{{ thread.content | escape | truncate(length=1100) }}
+      </pre>
     </div>
   </div>
   {% if thread.comments %}
@@ -49,7 +50,8 @@
       {{ macros::media(attachment=comment.attachment) }}
       {% endif %}
       <pre
-        class="font-nunito mx-2 break-all text-left whitespace-pre-wrap">{{ comment.content | escape | truncate(length=1100) }}</pre>
+        class="font-nunito mx-2 break-all text-left whitespace-pre-wrap">{{ comment.content | escape | truncate(length=1100) }}
+      </pre>
     </div>
   </div>
   {% endfor %}

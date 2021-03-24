@@ -23,14 +23,14 @@
     {% for thread in threads %}
       <div class="bg-gray-700 m-3 rounded-t-md group rounded-b-sm w-72 h-54 shadow-md border-solid border-2 border-gray-800 hover:border-gray-100 transition-colors">
         <a href={{ "/t/" ~ thread.uid }} title="{{ thread.title | escape }}">
-          <div class="bg-thread-accent-md font-bold visited:text-thread-accent-dk group-hover:text-thread-accent-lt rounded-t-md shadow-lg">
+          <div class="bg-thread-accent-md font-bold overflow-hidden h-6 visited:text-thread-accent-dk rounded-t-md shadow-lg">
             <h3>{{ thread.title | truncate(length=20) }}</h3>
           </div>
           <p>{{ thread.post_time | date(format="%B %d, %Y, %H:%M:%S") }}</p>
           <div class="flex flex-row justify-center text-center m-auto">
             {{ macros::media(attachment=thread.attachment) }}
           </div>
-          <p>UID: {{ thread.uid }}</p>
+          <p class="group-hover:text-thread-accent-lt">{{ thread.uid }}</p>
           <div class="bg-thread-accent-dk rounded-b-sm">
             <p>{{ thread.comment_count }} comment{{ thread.comment_count | pluralize }}</p>
           </div>

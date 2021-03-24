@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use crate::db::utils;
 
 pub struct DbConn {
   pub db: dgraph::Dgraph,
@@ -54,4 +55,17 @@ pub struct Thread {
 pub struct Attachment {
   pub filename: String,
   pub content_type: String,
+}
+
+impl Comment {
+  pub fn parse_texts(&mut self) {
+    self.content = utils::parse_text_from_u16(self.content.clone());
+  }
+}
+
+impl Thread {
+  pub fn parse_texts(&mut self) {
+    self.content = utils::parse_text_from_u16(self.content.clone());
+    self.title = utils::parse_text_from_u16(self.title.clone());
+  }
 }

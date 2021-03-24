@@ -110,6 +110,8 @@ pub fn add_comment(
 ) -> String {
   let mut txn = db.new_txn();
 
+  let content = utils::encode_text_in_u16(&comment.content);
+
   let mut q = format!(
     r#"
   _:new_comment <content> "{content}" .
@@ -119,7 +121,7 @@ pub fn add_comment(
   _:new_comment <dgraph.type> "Comment" .
   <{thread}> <comments> _:new_comment .
   "#,
-    content = comment.content.escape_default(),
+    content = content,
     thread = comment.thread,
     poster_uid = 0x2731,
     post_time = utils::get_curr_timestamp()
@@ -166,6 +168,9 @@ pub fn add_thread(
 ) -> String {
   let mut txn = db.new_txn();
 
+  let content = utils::encode_text_in_u16(&thread.content);
+  let title = utils::encode_text_in_u16(&thread.title);
+
   let mut q = format!(
     r#"
   _:new_thread <content> "{content}" .
@@ -174,8 +179,8 @@ pub fn add_thread(
   _:new_thread <title> "{title}" .
   _:new_thread <dgraph.type> "Thread" .
   "#,
-    content = thread.content.escape_default(),
-    title = thread.title.escape_default(),
+    content = content,
+    title = title,
     poster_uid = 0x2731,
     post_time = utils::get_curr_timestamp()
   );

@@ -8,13 +8,24 @@ use crate::db::types::DbConn;
 
 #[get("/")]
 pub fn index(db: State<DbConn>) -> Template {
-  let threads = db::get_threads(&db.db);
+  let mut threads = db::get_threads(&db.db);
+  for t in &mut threads.threads {
+    t.parse_texts();
+  }
   Template::render("index", &threads)
 }
 
 #[get("/t/<thread>")]
 pub fn thread(db: State<DbConn>, thread: String) -> Template {
-  let thread = db::get_thread(&db.db, thread);
+  let mut thread = db::get_thread(&db.db, thread);
+  thread.parse_texts();
+
+  if let Some(comments) = &mut thread.comments {
+    for c in comments {
+      c.parse_texts();
+    }
+  }
+
   Template::render("thread", &thread)
 }
 

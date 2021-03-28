@@ -20,6 +20,9 @@
   <a class="btn-accent-inverted ml-auto" href="/post">Create thread</a>
 </div>
 <div class="flex flex-row flex-wrap text-center justify-center">
+  {% if error_message %}
+    {{ macros::error(msg = error_message) }}
+  {% endif %}
   {% for thread in threads %}
   <div
     class="bg-gray-700 m-3 rounded-t-md group rounded-b-sm w-72 h-54 shadow-md border-solid border-2 border-gray-800 hover:border-gray-100 transition-colors">

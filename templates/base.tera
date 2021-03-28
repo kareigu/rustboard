@@ -19,9 +19,9 @@
       </a>
     </div>
     {% block content %}{% endblock content %}
+    {% if reply or error_message %}
+      {{ macros::clean_uri() }}
+    {% endif %}
   </body>
-
-</html>
-</body>
 
 </html>

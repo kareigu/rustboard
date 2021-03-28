@@ -47,7 +47,7 @@ pub async fn new_comment(
     //* Redirect user back to the index if an invalid thread UID was supplied
     //* This should never happen under normal circumstances, so it's most probable the user did something stupid
     //* ie. tried to manually change the UID to an invalid value
-    Ok(Redirect::to(format!("/")))
+    Ok(Redirect::to(format!("/?err=3")))
   }
 }
 

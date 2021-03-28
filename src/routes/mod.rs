@@ -8,13 +8,18 @@ use crate::db::types::DbConn;
 mod utils;
 mod context;
 
-#[get("/")]
-pub fn index(db: State<DbConn>) -> Template {
+#[get("/?<err>")]
+pub fn index(db: State<DbConn>, err: Option<usize>) -> Template {
   let mut threads = db::get_threads(&db.db);
   for t in &mut threads.threads {
     t.parse_texts();
   }
-  Template::render("index", &threads)
+
+  let context = context::GetIndexContext {
+    error_message: utils::get_create_post_err_msg(err),
+    threads: threads.threads,
+  };
+  Template::render("index", &context)
 }
 
 #[get("/t/<thread>?<reply>&<err>")]

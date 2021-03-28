@@ -77,7 +77,4 @@
 <script>
   document.getElementById("{{reply}}").scrollIntoView();
 </script>
-{% if reply or error_message %}
-{{ macros::clean_uri() }}
-{% endif %}
 {% endblock content %}

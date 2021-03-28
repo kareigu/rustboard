@@ -12,3 +12,9 @@ pub struct GetThreadContext {
   pub error_message: Option<String>,
   pub thread: Thread,
 }
+
+#[derive(Serialize)]
+pub struct GetIndexContext {
+  pub error_message: Option<String>,
+  pub threads: Vec<Thread>,
+}

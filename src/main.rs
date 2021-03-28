@@ -12,6 +12,7 @@ use db::types::DbConn;
 mod api;
 use api::v1;
 mod routes;
+mod utils;
 
 #[launch]
 fn rocket() -> rocket::Rocket {

@@ -4,7 +4,6 @@ use crate::db::types::Attachment;
 use rand::distributions::Alphanumeric;
 use rand::{thread_rng, Rng};
 use rocket::data::TempFile;
-use regex::Regex;
 
 //* Write file to the public folder
 //* All files have their name replaced with a randomly generated
@@ -43,10 +42,4 @@ pub async fn write_attachment(file: &mut TempFile<'_>) -> Result<Option<Attachme
   } else {
     Ok(None)
   }
-}
-
-
-pub fn check_uid_validity(s: &String) -> bool {
-  let re = Regex::new(r"^0x([A-z]|[0-9]){1,}$").unwrap();
-  re.is_match(s)
 }

@@ -26,7 +26,7 @@ pub async fn new_comment(
 ) -> std::io::Result<Redirect> {
   //* Only handle the request if the supplied UID is of valid format
   //* Eliminates possibility of database code injection this way
-  if utils::check_uid_validity(&comment.thread) {
+  if crate::utils::check_uid_validity(&comment.thread) {
     let attachment_w = utils::write_attachment(&mut comment.attachment).await;
 
     if let Ok(attachment) = attachment_w {

@@ -10,7 +10,7 @@ pub struct PostThreadContext {
 pub struct GetThreadContext {
   pub reply: Option<String>,
   pub error_message: Option<String>,
-  pub thread: Thread,
+  pub thread: Option<Thread>,
 }
 
 #[derive(Serialize)]

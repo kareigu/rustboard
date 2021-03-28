@@ -39,7 +39,7 @@ pub struct Comment {
   attachment: Option<Attachment>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Default)]
 pub struct Thread {
   pub uid: Option<String>,
   pub comment_count: Option<i32>,

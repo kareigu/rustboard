@@ -40,9 +40,15 @@ pub fn get_users(db: &Dgraph) -> Vec<types::User> {
     }
   }"#;
 
-  let resp = db.new_readonly_txn().query(q).expect("GetUsers Query");
-  let data: types::GetUsers = serde_json::from_slice(&resp.json).expect("parsing");
-  data.query
+  match db.new_readonly_txn().query(q) {
+    Err(e) => { println!("{:?}", e); Vec::new()},
+    Ok(resp) => {
+      match serde_json::from_slice::<types::GetUsers>(&resp.json) {
+        Err(e) => { println!("{:?}", e); Vec::new()},
+        Ok(data) => data.query,
+      }
+    }
+  }
 }
 
 pub fn get_threads(db: &Dgraph) -> types::GetThreads {
@@ -70,7 +76,7 @@ pub fn get_threads(db: &Dgraph) -> types::GetThreads {
   }
 }
 
-pub fn get_thread(db: &Dgraph, uid: String) -> types::Thread {
+pub fn get_thread(db: &Dgraph, uid: String) -> Option<types::Thread> {
   let q = r#"query thread($a: string) {
     thread(func: uid($a)) {
       uid
@@ -96,17 +102,31 @@ pub fn get_thread(db: &Dgraph, uid: String) -> types::Thread {
   let mut vars = HashMap::new();
   vars.insert("$a".to_string(), uid);
 
-  let resp = db
+  match db
     .new_readonly_txn()
     .query_with_vars(q, vars)
-    .expect("GetThread Query");
-  let data: types::ThreadResp= serde_json::from_slice(&resp.json).expect("parsing");
-  let thread = data
-    .thread
-    .into_iter()
-    .next()
-    .expect("Couldn't iterate over GetThread Vec");
-  thread
+    {
+      Err(e) => { 
+        println!("{:?}", e); 
+        None
+      },
+      Ok(resp) => {
+        match serde_json::from_slice::<types::ThreadResp>(&resp.json) {
+          Err(e) => { 
+            println!("{:?}", e); 
+            None
+          },
+          Ok(data) => {
+            let thread = data
+              .thread
+              .into_iter()
+              .next()
+              .expect("Couldn't iterate over GetThread Vec");
+            Some(thread)
+          }
+        }
+      }
+    }
 }
 
 pub fn add_comment(

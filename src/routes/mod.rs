@@ -28,11 +28,14 @@ pub fn index(db: State<DbConn>, err: Option<usize>) -> Template {
 #[get("/t/<thread>?<reply>&<err>")]
 pub fn thread(db: State<DbConn>, thread: String, reply: Option<String>, err: Option<usize>) -> Template {
   let mut thread = db::get_thread(&db.db, thread);
-  thread.parse_texts();
 
-  if let Some(comments) = &mut thread.comments {
-    for c in comments {
-      c.parse_texts();
+  if let Some(t) = &mut thread {
+    t.parse_texts();
+
+    if let Some(comments) = &mut t.comments {
+      for c in comments {
+        c.parse_texts();
+      }
     }
   }
 

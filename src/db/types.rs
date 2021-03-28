@@ -57,6 +57,8 @@ pub struct Attachment {
   pub content_type: String,
 }
 
+//* Convert text back to normal strings after getting them as
+//* UTF-16 value rows from the database
 impl Comment {
   pub fn parse_texts(&mut self) {
     self.content = utils::parse_text_from_u16(self.content.clone());

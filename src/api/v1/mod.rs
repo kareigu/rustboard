@@ -28,10 +28,13 @@ pub async fn new_comment(
   mut comment: Form<types::NewComment<'_>>,
   db: State<'_, DbConn>,
 ) -> std::io::Result<Redirect> {
+  //* Only handle the request if the supplied UID is of valid format
+  //* Eliminates possibility of database code injection this way
   if utils::check_uid_validity(&comment.thread) {
     let attachment_w = utils::write_attachment(&mut comment.attachment).await;
 
     if let Ok(attachment) = attachment_w {
+      //* Comments should be allowed to have a message, an attachment or both
       if comment.content.len() > 0 || attachment.is_some() {
         Ok(Redirect::to(format!("/t/{}?reply={}", &comment.thread ,db::add_comment(&db.db, &comment, attachment))))
       } else {
@@ -41,6 +44,9 @@ pub async fn new_comment(
       Ok(Redirect::to(format!("/t/{}?reply=reply&err=2", comment.thread)))
     }
   } else {
+    //* Redirect user back to the index if an invalid thread UID was supplied
+    //* This should never happen under normal circumstances, so it's most probable the user did something stupid
+    //* ie. tried to manually change the UID to an invalid value
     Ok(Redirect::to(format!("/")))
   }
 }
@@ -54,6 +60,7 @@ pub async fn new_thread(
   let attachment_w = utils::write_attachment(&mut thread.attachment).await;
 
   if let Ok(attachment) = attachment_w {
+    //* All threads should have some form of message
     if thread.content.len() > 0 {
       Ok(Redirect::to(format!("/{}", db::add_thread(&db.db, thread, attachment))))
     } else {

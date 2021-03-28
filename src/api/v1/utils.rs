@@ -6,6 +6,9 @@ use rand::{thread_rng, Rng};
 use rocket::data::TempFile;
 use regex::Regex;
 
+//* Write file to the public folder
+//* All files have their name replaced with a randomly generated
+//* 14 character alphanumeric string
 pub async fn write_attachment(file: &mut TempFile<'_>) -> Result<Option<Attachment>> {
   if file.len() > 0 {
     if let Some(c) = file.content_type() {

@@ -33,7 +33,7 @@
           <h3>{{ thread.title | truncate(length=20) }}</h3>
         </div>
         <p>{{ thread.post_time | date(format="%B %d, %Y, %H:%M:%S") }}</p>
-        <div class="flex flex-row justify-center text-center m-auto">
+        <div class="flex flex-row justify-center text-center m-auto h-44 w-44">
           {{ macros::media(attachment=thread.attachment) }}
         </div>
         <p class="group-hover:text-thread-accent-lt">{{ thread.uid }}</p>

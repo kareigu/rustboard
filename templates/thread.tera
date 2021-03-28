@@ -36,7 +36,9 @@
         <p class="ml-auto mr-2">{{ thread.post_time | date(format="%B %d, %Y, %H:%M:%S") }}</p>
       </div>
       <div class="flex flex-row">
-        {{ macros::media(attachment=thread.attachment) }}
+        <div class="max-w-md min-h-[11rem]">
+          {{ macros::media(attachment=thread.attachment) }}
+        </div>
         <pre class="font-nunito mx-2 break-all text-left whitespace-pre-wrap">{{ thread.content | escape | truncate(length=1100) }}
         </pre>
       </div>
@@ -84,7 +86,9 @@
     {{ macros::not_found(msg = "That thread doesn't exist", status = 404) }}
   {% endif %}
 </div>
-<script>
-  document.getElementById("{{reply}}").scrollIntoView();
-</script>
+{% if reply %}
+  <script>
+    document.getElementById("{{reply}}").scrollIntoView();
+  </script>
+{% endif %}
 {% endblock content %}

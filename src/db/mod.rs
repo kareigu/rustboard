@@ -77,56 +77,61 @@ pub fn get_threads(db: &Dgraph) -> types::GetThreads {
 }
 
 pub fn get_thread(db: &Dgraph, uid: String) -> Option<types::Thread> {
-  let q = r#"query thread($a: string) {
-    thread(func: uid($a)) {
-      uid
-      title
-      post_time
-      attachment {
-        filename
-        content_type
-      }
-    	content
-      comment_count : count(comments)
-    	comments(orderasc: post_time) {
+
+  if crate::utils::check_uid_validity(&uid) {
+    let q = r#"query thread($a: string) {
+      thread(func: uid($a)) {
         uid
-        content
+        title
         post_time
-      	attachment {
+        attachment {
           filename
           content_type
         }
-      }
-    }
-  }"#;
-  let mut vars = HashMap::new();
-  vars.insert("$a".to_string(), uid);
-
-  match db
-    .new_readonly_txn()
-    .query_with_vars(q, vars)
-    {
-      Err(e) => { 
-        println!("{:?}", e); 
-        None
-      },
-      Ok(resp) => {
-        match serde_json::from_slice::<types::ThreadResp>(&resp.json) {
-          Err(e) => { 
-            println!("{:?}", e); 
-            None
-          },
-          Ok(data) => {
-            let thread = data
-              .thread
-              .into_iter()
-              .next()
-              .expect("Couldn't iterate over GetThread Vec");
-            Some(thread)
+        content
+        comment_count : count(comments)
+        comments(orderasc: post_time) {
+          uid
+          content
+          post_time
+          attachment {
+            filename
+            content_type
           }
         }
       }
-    }
+    }"#;
+    let mut vars = HashMap::new();
+    vars.insert("$a".to_string(), uid);
+  
+    match db
+      .new_readonly_txn()
+      .query_with_vars(q, vars)
+      {
+        Err(e) => { 
+          println!("{:?}", e); 
+          None
+        },
+        Ok(resp) => {
+          match serde_json::from_slice::<types::ThreadResp>(&resp.json) {
+            Err(e) => { 
+              println!("{:?}", e); 
+              None
+            },
+            Ok(data) => {
+              let thread = data
+                .thread
+                .into_iter()
+                .next()
+                .expect("Couldn't iterate over GetThread Vec");
+              Some(thread)
+            }
+          }
+        }
+      }
+  } else {
+    None
+  }
 }
 
 pub fn add_comment(

@@ -28,16 +28,20 @@ pub async fn new_comment(
   mut comment: Form<types::NewComment<'_>>,
   db: State<'_, DbConn>,
 ) -> std::io::Result<Redirect> {
-  let attachment_w = utils::write_attachment(&mut comment.attachment).await;
+  if utils::check_uid_validity(&comment.thread) {
+    let attachment_w = utils::write_attachment(&mut comment.attachment).await;
 
-  if let Ok(attachment) = attachment_w {
-    if comment.content.len() > 0 || attachment.is_some() {
-      Ok(Redirect::to(format!("/t/{}?reply={}", &comment.thread ,db::add_comment(&db.db, &comment, attachment))))
+    if let Ok(attachment) = attachment_w {
+      if comment.content.len() > 0 || attachment.is_some() {
+        Ok(Redirect::to(format!("/t/{}?reply={}", &comment.thread ,db::add_comment(&db.db, &comment, attachment))))
+      } else {
+        Ok(Redirect::to(format!("/t/{}?reply=reply&err=0", &comment.thread)))
+      }
     } else {
-      Ok(Redirect::to(format!("/t/{}?reply=reply&err=0", &comment.thread)))
+      Ok(Redirect::to(format!("/t/{}?reply=reply&err=2", comment.thread)))
     }
   } else {
-    Ok(Redirect::to(format!("/t/{}?reply=reply&err=2", comment.thread)))
+    Ok(Redirect::to(format!("/")))
   }
 }
 
@@ -46,6 +50,7 @@ pub async fn new_thread(
   mut thread: Form<types::NewThread<'_>>,
   db: State<'_, DbConn>,
 ) -> std::io::Result<Redirect> {
+  
   let attachment_w = utils::write_attachment(&mut thread.attachment).await;
 
   if let Ok(attachment) = attachment_w {

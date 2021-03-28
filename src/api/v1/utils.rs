@@ -2,6 +2,7 @@ use crate::db::types::Attachment;
 use rand::distributions::Alphanumeric;
 use rand::{thread_rng, Rng};
 use rocket::data::TempFile;
+use regex::Regex;
 
 pub async fn write_attachment(file: &mut TempFile<'_>) -> std::io::Result<Option<Attachment>> {
   if file.len() > 0 {
@@ -24,4 +25,10 @@ pub async fn write_attachment(file: &mut TempFile<'_>) -> std::io::Result<Option
   } else {
     Ok(None)
   }
+}
+
+
+pub fn check_uid_validity(s: &String) -> bool {
+  let re = Regex::new(r"^0x([A-z]|[0-9]){1,}$").unwrap();
+  re.is_match(s)
 }

@@ -70,3 +70,23 @@ pub fn post_thread(err: Option<usize>) -> Template {
 
   Template::render("create_thread", &context)
 }
+
+#[catch(404)]
+pub fn not_found() -> Template {
+  let context = context::CatchContext {
+    error_message: "That page doesn't exist".to_string(),
+    status: 404,
+  };
+
+  Template::render("catcher", &context)
+}
+
+#[catch(500)]
+pub fn server_error() -> Template {
+  let context = context::CatchContext {
+    error_message: "Server error".to_string(),
+    status: 500,
+  };
+
+  Template::render("catcher", &context)
+}

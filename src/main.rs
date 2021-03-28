@@ -40,4 +40,10 @@ fn rocket() -> rocket::Rocket {
         v1::new_thread
       ],
     )
+    .register(
+      catchers![
+        routes::not_found, 
+        routes::server_error
+      ]
+    )
 }

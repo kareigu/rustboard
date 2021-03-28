@@ -18,3 +18,9 @@ pub struct GetIndexContext {
   pub error_message: Option<String>,
   pub threads: Option<Vec<Thread>>,
 }
+
+#[derive(Serialize)]
+pub struct CatchContext {
+  pub error_message: String,
+  pub status: i32,
+}

@@ -28,3 +28,11 @@
   const u = window.location.toString(), c = u.substring(0, u.indexOf("?")); window.history.replaceState({}, document.title, c);
 </script>
 {% endmacro clean_uri %}
+
+{% macro not_found(msg) %}
+<div class="m-auto text-center">
+  <h1 class="text-3xl">404</h1>
+  <p>{{msg}}</p>
+  <img src="/static/logo.png" alt="logo" />
+</div>
+{% endmacro not_found %}

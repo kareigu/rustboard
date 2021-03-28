@@ -36,7 +36,7 @@
         <p class="ml-auto mr-2">{{ thread.post_time | date(format="%B %d, %Y, %H:%M:%S") }}</p>
       </div>
       <div class="flex flex-row">
-        <div class="max-w-md min-h-[11rem]">
+        <div class="max-w-md max-h-22 min-h-[11rem]">
           {{ macros::media(attachment=thread.attachment) }}
         </div>
         <pre class="font-nunito mx-2 break-all text-left whitespace-pre-wrap">{{ thread.content | escape | truncate(length=1100) }}
@@ -54,9 +54,11 @@
         <p class="ml-auto mr-2">{{ comment.post_time | date(format="%B %d, %Y, %H:%M:%S") }}</p>
       </div>
       <div class="flex flex-row text-left">
-        {% if comment.attachment %}
-        {{ macros::media(attachment=comment.attachment) }}
-        {% endif %}
+        <div class="max-w-md max-h-22 min-h-[11rem]">
+          {% if comment.attachment %}
+          {{ macros::media(attachment=comment.attachment) }}
+          {% endif %}
+        </div>
         <pre class="font-nunito mx-2 break-all text-left whitespace-pre-wrap">{{ comment.content | escape | truncate(length=1100) }}
         </pre>
       </div>

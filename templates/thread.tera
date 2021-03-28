@@ -81,8 +81,9 @@
       </form>
     </div>
   {% else %}
-    <div class="m-auto">
+    <div class="m-auto text-center">
       <h1 class="text-3xl">404</h1>
+      <img src="/static/logo.png" alt="logo" />
     </div>
   {% endif %}
 </div>

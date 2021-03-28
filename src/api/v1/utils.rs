@@ -17,7 +17,19 @@ pub async fn write_attachment(file: &mut TempFile<'_>) -> Result<Option<Attachme
         .take(14)
         .map(char::from)
         .collect();
-      let filename = format!("{}.{}", file_slug, content_type.split("/").last().unwrap(),);
+
+      let file_extension = match content_type.split("/").last() {
+        None => "png",
+        Some(s) => {
+          if s == "mpeg" {
+            "mp3"
+          } else {
+            s
+          }
+        },
+      };
+      
+      let filename = format!("{}.{}", file_slug, file_extension);
       let new_attachment = Attachment {
         filename,
         content_type,

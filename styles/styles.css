@@ -4,13 +4,14 @@
 @tailwind components;
 @tailwind utilities;
 
-
-.btn-accent {
-  @apply
-  rounded-t-sm px-2 border-solid border-b-2 border-thread-accent-md bg-gray-900 text-gray-50 hover:bg-gray-700 hover:border-thread-accent-dk transition-colors
-}
-
-.btn-accent-inverted {
-  @apply
-  rounded-t-sm px-2 border-solid border-b-2 border-gray-700 bg-thread-accent-md text-gray-50 hover:bg-thread-accent-lt hover:border-gray-900 transition-colors
+@layer components {
+  .btn-accent {
+    @apply
+    rounded-t-sm px-2 border-solid border-b-2 border-thread-accent-md bg-gray-900 text-gray-50 hover:bg-gray-700 hover:border-thread-accent-dk transition-colors
+  }
+  
+  .btn-accent-inverted {
+    @apply
+    rounded-t-sm px-2 border-solid border-b-2 border-gray-700 bg-thread-accent-md text-gray-50 hover:bg-thread-accent-lt hover:border-gray-900 transition-colors
+  }
 }

@@ -81,7 +81,7 @@
       </form>
     </div>
   {% else %}
-    {{ macros::not_found(msg = "That thread doesn't exist") }}
+    {{ macros::not_found(msg = "That thread doesn't exist", status = 404) }}
   {% endif %}
 </div>
 <script>

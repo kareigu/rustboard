@@ -29,9 +29,9 @@
 </script>
 {% endmacro clean_uri %}
 
-{% macro not_found(msg) %}
+{% macro not_found(msg, status) %}
 <div class="m-auto text-center">
-  <h1 class="text-3xl">404</h1>
+  <h1 class="text-3xl">{{status}}</h1>
   <p>{{msg}}</p>
   <img src="/static/logo.png" alt="logo" />
 </div>

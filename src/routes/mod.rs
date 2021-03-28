@@ -11,8 +11,11 @@ mod context;
 #[get("/?<err>")]
 pub fn index(db: State<DbConn>, err: Option<usize>) -> Template {
   let mut threads = db::get_threads(&db.db);
-  for t in &mut threads.threads {
-    t.parse_texts();
+
+  if let Some(threads) = &mut threads.threads  {
+    for t in threads {
+      t.parse_texts();
+    }
   }
 
   let context = context::GetIndexContext {

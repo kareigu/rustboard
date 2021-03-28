@@ -12,7 +12,7 @@ pub struct GetUsers {
 
 #[derive(Serialize, Deserialize)]
 pub struct GetThreads {
-  pub threads: Vec<Thread>,
+  pub threads: Option<Vec<Thread>>,
 }
 
 #[derive(Serialize, Deserialize)]

@@ -59,9 +59,15 @@ pub fn get_threads(db: &Dgraph) -> types::GetThreads {
     }
   }"#;
 
-  let resp = db.new_readonly_txn().query(q).expect("GetThreads Query");
-  let data: types::GetThreads = serde_json::from_slice(&resp.json).expect("parsing");
-  data
+  match db.new_readonly_txn().query(q) { 
+    Err(e) => { println!("{:?}", e); types::GetThreads { threads: None }},
+    Ok(resp) => {
+      match serde_json::from_slice(&resp.json) {
+        Err(e) => { println!("{:?}", e); types::GetThreads { threads: None }},
+        Ok(data) => data,
+      }
+    }
+  }
 }
 
 pub fn get_thread(db: &Dgraph, uid: String) -> types::Thread {

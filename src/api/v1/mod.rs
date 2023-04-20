@@ -25,34 +25,35 @@ pub async fn new_comment(
 ) -> std::io::Result<Redirect> {
   //* Only handle the request if the supplied UID is of valid format
   //* Eliminates possibility of database code injection this way
-  if crate::utils::check_uid_validity(&comment.thread) {
-    let attachment_w = utils::write_attachment(&mut comment.attachment).await;
-
-    if let Ok(attachment) = attachment_w {
-      //* Comments should be allowed to have a message, an attachment or both
-      if comment.content.len() > 0 || attachment.is_some() {
-        Ok(Redirect::to(format!(
-          "/t/{}?reply={}",
-          &comment.thread,
-          db::add_comment(&db.db, &comment, attachment)
-        )))
-      } else {
-        Ok(Redirect::to(format!(
-          "/t/{}?reply=reply&err=0",
-          &comment.thread
-        )))
-      }
-    } else {
-      Ok(Redirect::to(format!(
-        "/t/{}?reply=reply&err=2",
-        comment.thread
-      )))
-    }
-  } else {
+  if !crate::utils::check_uid_validity(&comment.thread) {
     //* Redirect user back to the index if an invalid thread UID was supplied
     //* This should never happen under normal circumstances, so it's most probable the user did something stupid
     //* ie. tried to manually change the UID to an invalid value
-    Ok(Redirect::to(format!("/?err=1")))
+    return Ok(Redirect::to(format!("/?err=1")));
+  }
+  let attachment = match utils::write_attachment(&mut comment.attachment).await {
+    Ok(a) => a,
+    Err(e) => {
+      println!("{}", e);
+      return Ok(Redirect::to(format!(
+        "/t/{}?reply=reply&err=2",
+        comment.thread
+      )));
+    }
+  };
+
+  //* Comments should be allowed to have a message, an attachment or both
+  if comment.content.len() > 0 || attachment.is_some() {
+    Ok(Redirect::to(format!(
+      "/t/{}?reply={}",
+      &comment.thread,
+      db::add_comment(&db.db, &comment, attachment)
+    )))
+  } else {
+    Ok(Redirect::to(format!(
+      "/t/{}?reply=reply&err=0",
+      &comment.thread
+    )))
   }
 }
 
@@ -61,19 +62,20 @@ pub async fn new_thread(
   mut thread: Form<types::NewThread<'_>>,
   db: &State<DbConn>,
 ) -> std::io::Result<Redirect> {
-  let attachment_w = utils::write_attachment(&mut thread.attachment).await;
-
-  if let Ok(attachment) = attachment_w {
-    //* All threads should have some form of message
-    if thread.content.len() > 0 {
-      Ok(Redirect::to(format!(
-        "/{}",
-        db::add_thread(&db.db, thread, attachment)
-      )))
-    } else {
-      Ok(Redirect::to("/post?err=0".to_string()))
-    }
-  } else {
-    Ok(Redirect::to("/post?err=2".to_string()))
+  if thread.content.len() == 0 {
+    return Ok(Redirect::to("/post?err=0".to_string()));
   }
+  let attachment = match utils::write_attachment(&mut thread.attachment).await {
+    Ok(a) => a,
+    Err(e) => {
+      println!("{}", e);
+      return Ok(Redirect::to("/post?err=2".to_string()));
+    }
+  };
+
+  //* All threads should have some form of message
+  Ok(Redirect::to(format!(
+    "/{}",
+    db::add_thread(&db.db, thread, attachment)
+  )))
 }

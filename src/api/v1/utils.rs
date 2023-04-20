@@ -9,51 +9,39 @@ use rocket::fs::TempFile;
 //* All files have their name replaced with a randomly generated
 //* 14 character alphanumeric string
 pub async fn write_attachment(file: &mut TempFile<'_>) -> Result<Option<Attachment>> {
-  if file.len() > 0 {
-    if let Some(c) = file.content_type() {
-      let content_type = c.to_string();
-      let file_slug: String = thread_rng()
-        .sample_iter(&Alphanumeric)
-        .take(14)
-        .map(char::from)
-        .collect();
-
-      let file_extension = match content_type.split("/").last() {
-        None => "png",
-        Some(s) => {
-          if s == "mpeg" {
-            "mp3"
-          } else {
-            s
-          }
-        }
-      };
-
-      let filename = format!("{}.{}", file_slug, file_extension);
-      let new_attachment = Attachment {
-        filename,
-        content_type,
-      };
-
-      match file.persist_to("/tmp/temp.png").await {
-        Ok(_) => {
-          let path = format!("./files/{}", new_attachment.filename);
-          if let Err(e) = std::fs::copy("/tmp/temp.png", path) {
-            Err(e)
-          } else {
-            if let Err(e) = std::fs::remove_file("/tmp/temp.png") {
-              Err(e)
-            } else {
-              Ok(Some(new_attachment))
-            }
-          }
-        }
-        Err(e) => Err(e),
-      }
-    } else {
-      Err(Error::new(ErrorKind::Other, "No content-type"))
-    }
-  } else {
-    Ok(None)
+  if file.len() == 0 {
+    return Ok(None);
   }
+
+  let c = match file.content_type() {
+    Some(c) => c,
+    None => return Err(Error::new(ErrorKind::Other, "No content-type")),
+  };
+
+  let file_slug: String = thread_rng()
+    .sample_iter(&Alphanumeric)
+    .take(14)
+    .map(char::from)
+    .collect();
+
+  let content_type = c.to_string();
+  let file_extension = match content_type.split("/").last() {
+    None => "png",
+    Some(s) => match s {
+      "mpeg" => "mp3",
+      _ => s,
+    },
+  };
+
+  let filename = format!("{}.{}", file_slug, file_extension);
+  let new_attachment = Attachment {
+    filename,
+    content_type,
+  };
+
+  file
+    .copy_to(format!("./files/{}", new_attachment.filename))
+    .await?;
+
+  Ok(Some(new_attachment))
 }

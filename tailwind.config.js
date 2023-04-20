@@ -14,7 +14,7 @@ module.exports = {
         }
       },
       textColor: {
-        'thread-link': '#234099'
+        'thread-link': '#FFFFFF'
       }
     },
   },

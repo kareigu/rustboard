@@ -184,12 +184,12 @@ pub fn add_comment(
   match txn.mutate(m) {
     Err(e) => {
       println!("{:?}", e);
-      format!("reply&err=3")
+      "reply&err=3".to_string()
     }
     Ok(assigned) => match txn.commit() {
       Err(e) => {
         println!("{:?}", e);
-        format!("reply&err=3")
+        "reply&err=3".to_string()
       }
       Ok(_) => {
         let mut new_comment_uid: String = "".to_string();
@@ -215,7 +215,7 @@ pub fn add_thread(
   let mut txn = db.new_txn();
 
   let content = utils::encode_text_in_u16(&thread.content);
-  let title = if thread.title.len() > 0 {
+  let title = if !thread.title.is_empty() {
     utils::encode_text_in_u16(&thread.title)
   } else {
     content.clone()
@@ -257,12 +257,12 @@ pub fn add_thread(
   match txn.mutate(m) {
     Err(e) => {
       println!("{:?}", e);
-      format!("post?err=3")
+      "post?err=3".to_string()
     }
     Ok(assigned) => match txn.commit() {
       Err(e) => {
         println!("{:?}", e);
-        format!("post?err=3")
+        "post?err=3".to_string()
       }
       Ok(_) => {
         let mut new_thread_uid: String = "".to_string();

@@ -25,7 +25,7 @@ pub fn parse_text_from_u16(u16_str: Option<String>) -> Option<String> {
   }
 }
 
-pub fn encode_text_in_u16(s: &String) -> String {
+pub fn encode_text_in_u16(s: &str) -> String {
   let mut o = "".to_string();
 
   for c in s.encode_utf16() {

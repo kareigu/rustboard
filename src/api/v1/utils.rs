@@ -25,7 +25,7 @@ pub async fn write_attachment(file: &mut TempFile<'_>) -> Result<Option<Attachme
     .collect();
 
   let content_type = c.to_string();
-  let file_extension = match content_type.split("/").last() {
+  let file_extension = match content_type.split('/').last() {
     None => "png",
     Some(s) => match s {
       "mpeg" => "mp3",

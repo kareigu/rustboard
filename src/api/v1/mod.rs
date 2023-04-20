@@ -29,7 +29,7 @@ pub async fn new_comment(
     //* Redirect user back to the index if an invalid thread UID was supplied
     //* This should never happen under normal circumstances, so it's most probable the user did something stupid
     //* ie. tried to manually change the UID to an invalid value
-    return Ok(Redirect::to(format!("/?err=1")));
+    return Ok(Redirect::to("/?err=1".to_string()));
   }
   let attachment = match utils::write_attachment(&mut comment.attachment).await {
     Ok(a) => a,
@@ -43,7 +43,7 @@ pub async fn new_comment(
   };
 
   //* Comments should be allowed to have a message, an attachment or both
-  if comment.content.len() > 0 || attachment.is_some() {
+  if !comment.content.is_empty() || attachment.is_some() {
     Ok(Redirect::to(format!(
       "/t/{}?reply={}",
       &comment.thread,
@@ -62,7 +62,7 @@ pub async fn new_thread(
   mut thread: Form<types::NewThread<'_>>,
   db: &State<DbConn>,
 ) -> std::io::Result<Redirect> {
-  if thread.content.len() == 0 {
+  if thread.content.is_empty() {
     return Ok(Redirect::to("/post?err=0".to_string()));
   }
   let attachment = match utils::write_attachment(&mut thread.attachment).await {

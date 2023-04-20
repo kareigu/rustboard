@@ -86,8 +86,8 @@ pub fn get_threads(db: &Dgraph) -> types::GetThreads {
   }
 }
 
-pub fn get_thread(db: &Dgraph, uid: String) -> Option<types::Thread> {
-  if crate::utils::check_uid_validity(&uid) {
+pub fn get_thread(db: &Dgraph, uid: &str) -> Option<types::Thread> {
+  if crate::utils::check_uid_validity(uid) {
     let q = r#"query thread($a: string) {
       thread(func: uid($a)) {
         uid
@@ -111,7 +111,7 @@ pub fn get_thread(db: &Dgraph, uid: String) -> Option<types::Thread> {
       }
     }"#;
     let mut vars = HashMap::new();
-    vars.insert("$a".to_string(), uid);
+    vars.insert("$a".to_string(), uid.to_string());
 
     match db.new_readonly_txn().query_with_vars(q, vars) {
       Err(e) => {

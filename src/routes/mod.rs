@@ -28,7 +28,7 @@ pub fn index(db: &State<DbConn>, err: Option<usize>) -> Template {
 #[get("/t/<thread>?<reply>&<err>")]
 pub fn thread(
   db: &State<DbConn>,
-  thread: String,
+  thread: &str,
   reply: Option<String>,
   err: Option<usize>,
 ) -> Template {

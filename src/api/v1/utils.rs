@@ -1,9 +1,9 @@
-use std::io::{ErrorKind, Error, Result};
+use std::io::{Error, ErrorKind, Result};
 
 use crate::db::types::Attachment;
 use rand::distributions::Alphanumeric;
 use rand::{thread_rng, Rng};
-use rocket::data::TempFile;
+use rocket::fs::TempFile;
 
 //* Write file to the public folder
 //* All files have their name replaced with a randomly generated
@@ -26,9 +26,9 @@ pub async fn write_attachment(file: &mut TempFile<'_>) -> Result<Option<Attachme
           } else {
             s
           }
-        },
+        }
       };
-      
+
       let filename = format!("{}.{}", file_slug, file_extension);
       let new_attachment = Attachment {
         filename,
@@ -38,14 +38,16 @@ pub async fn write_attachment(file: &mut TempFile<'_>) -> Result<Option<Attachme
       match file.persist_to("/tmp/temp.png").await {
         Ok(_) => {
           let path = format!("./files/{}", new_attachment.filename);
-          if let Err(e) = std::fs::copy("/tmp/temp.png", path) { Err(e) }
-          else {
-            if let Err(e) = std::fs::remove_file("/tmp/temp.png") { Err(e) }
-            else {
+          if let Err(e) = std::fs::copy("/tmp/temp.png", path) {
+            Err(e)
+          } else {
+            if let Err(e) = std::fs::remove_file("/tmp/temp.png") {
+              Err(e)
+            } else {
               Ok(Some(new_attachment))
             }
           }
-        },
+        }
         Err(e) => Err(e),
       }
     } else {

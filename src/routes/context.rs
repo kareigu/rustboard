@@ -1,5 +1,5 @@
-use serde::Serialize;
 use crate::db::types::Thread;
+use serde::Serialize;
 
 #[derive(Serialize)]
 pub struct PostThreadContext {

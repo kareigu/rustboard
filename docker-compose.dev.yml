@@ -1,6 +1,6 @@
 services:
   zero:
-    image: dgraph/dgraph:latest
+    image: dgraph/dgraph:v20.11.3
     container_name: dgraph_zero
     volumes:
       - ./dgraph:/dgraph
@@ -10,7 +10,7 @@ services:
     restart: on-failure
     command: dgraph zero --my=zero:5080
   alpha:
-    image: dgraph/dgraph:latest
+    image: dgraph/dgraph:v20.11.3
     container_name: dgraph_alpha
     volumes:
       - ./dgraph:/dgraph
@@ -20,7 +20,7 @@ services:
     restart: on-failure
     command: dgraph alpha --my=alpha:7080 --zero=zero:5080 --whitelist 0.0.0.0/0
   ratel:
-    image: dgraph/dgraph:latest
+    image: dgraph/dgraph:v20.11.3
     container_name: dgraph_ratel
     ports:
       - 8000:8000

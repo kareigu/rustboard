@@ -6,6 +6,8 @@ use dgraph::Dgraph;
 use rocket::form::Form;
 use std::collections::HashMap;
 
+pub static DEFAULT_USER_UID: u32 = 0x05;
+
 pub fn get_users(db: &Dgraph) -> Vec<types::User> {
   /*let q = r#"{
     query(func: type(user)) {
@@ -41,13 +43,17 @@ pub fn get_users(db: &Dgraph) -> Vec<types::User> {
   }"#;
 
   match db.new_readonly_txn().query(q) {
-    Err(e) => { println!("{:?}", e); Vec::new()},
-    Ok(resp) => {
-      match serde_json::from_slice::<types::GetUsers>(&resp.json) {
-        Err(e) => { println!("{:?}", e); Vec::new()},
-        Ok(data) => data.query,
-      }
+    Err(e) => {
+      println!("{:?}", e);
+      Vec::new()
     }
+    Ok(resp) => match serde_json::from_slice::<types::GetUsers>(&resp.json) {
+      Err(e) => {
+        println!("{:?}", e);
+        Vec::new()
+      }
+      Ok(data) => data.query,
+    },
   }
 }
 
@@ -65,19 +71,22 @@ pub fn get_threads(db: &Dgraph) -> types::GetThreads {
     }
   }"#;
 
-  match db.new_readonly_txn().query(q) { 
-    Err(e) => { println!("{:?}", e); types::GetThreads { threads: None }},
-    Ok(resp) => {
-      match serde_json::from_slice(&resp.json) {
-        Err(e) => { println!("{:?}", e); types::GetThreads { threads: None }},
-        Ok(data) => data,
-      }
+  match db.new_readonly_txn().query(q) {
+    Err(e) => {
+      println!("{:?}", e);
+      types::GetThreads { threads: None }
     }
+    Ok(resp) => match serde_json::from_slice(&resp.json) {
+      Err(e) => {
+        println!("{:?}", e);
+        types::GetThreads { threads: None }
+      }
+      Ok(data) => data,
+    },
   }
 }
 
 pub fn get_thread(db: &Dgraph, uid: String) -> Option<types::Thread> {
-
   if crate::utils::check_uid_validity(&uid) {
     let q = r#"query thread($a: string) {
       thread(func: uid($a)) {
@@ -103,32 +112,27 @@ pub fn get_thread(db: &Dgraph, uid: String) -> Option<types::Thread> {
     }"#;
     let mut vars = HashMap::new();
     vars.insert("$a".to_string(), uid);
-  
-    match db
-      .new_readonly_txn()
-      .query_with_vars(q, vars)
-      {
-        Err(e) => { 
-          println!("{:?}", e); 
-          None
-        },
-        Ok(resp) => {
-          match serde_json::from_slice::<types::ThreadResp>(&resp.json) {
-            Err(e) => { 
-              println!("{:?}", e); 
-              None
-            },
-            Ok(data) => {
-              let thread = data
-                .thread
-                .into_iter()
-                .next()
-                .expect("Couldn't iterate over GetThread Vec");
-              Some(thread)
-            }
-          }
-        }
+
+    match db.new_readonly_txn().query_with_vars(q, vars) {
+      Err(e) => {
+        println!("{:?}", e);
+        None
       }
+      Ok(resp) => match serde_json::from_slice::<types::ThreadResp>(&resp.json) {
+        Err(e) => {
+          println!("{:?}", e);
+          None
+        }
+        Ok(data) => {
+          let thread = data
+            .thread
+            .into_iter()
+            .next()
+            .expect("Couldn't iterate over GetThread Vec");
+          Some(thread)
+        }
+      },
+    }
   } else {
     None
   }
@@ -154,7 +158,7 @@ pub fn add_comment(
   "#,
     content = content,
     thread = comment.thread,
-    poster_uid = 0x2731,
+    poster_uid = DEFAULT_USER_UID,
     post_time = utils::get_curr_timestamp()
   );
 
@@ -178,25 +182,28 @@ pub fn add_comment(
   m.set_set_nquads(q.into());
 
   match txn.mutate(m) {
-    Err(e) => { println!("{:?}", e); format!("reply&err=3") },
-    Ok(assigned) => {
-      match txn.commit() {
-        Err(e) => { println!("{:?}", e); format!("reply&err=3") },
-        Ok(_) => {
-          let mut new_comment_uid: String = "".to_string();
-
-          for (key, val) in assigned.uids.iter() {
-            println!("\t{} => {}", key, val);
-            if key == "new_comment" {
-              new_comment_uid = val.clone();
-            }
-          }
-
-          new_comment_uid
-        }
-      }
-
+    Err(e) => {
+      println!("{:?}", e);
+      format!("reply&err=3")
     }
+    Ok(assigned) => match txn.commit() {
+      Err(e) => {
+        println!("{:?}", e);
+        format!("reply&err=3")
+      }
+      Ok(_) => {
+        let mut new_comment_uid: String = "".to_string();
+
+        for (key, val) in assigned.uids.iter() {
+          println!("\t{} => {}", key, val);
+          if key == "new_comment" {
+            new_comment_uid = val.clone();
+          }
+        }
+
+        new_comment_uid
+      }
+    },
   }
 }
 
@@ -208,7 +215,11 @@ pub fn add_thread(
   let mut txn = db.new_txn();
 
   let content = utils::encode_text_in_u16(&thread.content);
-  let title = if thread.title.len() > 0 { utils::encode_text_in_u16(&thread.title) } else { content.clone() };
+  let title = if thread.title.len() > 0 {
+    utils::encode_text_in_u16(&thread.title)
+  } else {
+    content.clone()
+  };
 
   let mut q = format!(
     r#"
@@ -220,7 +231,7 @@ pub fn add_thread(
   "#,
     content = content,
     title = title,
-    poster_uid = 0x2731,
+    poster_uid = DEFAULT_USER_UID,
     post_time = utils::get_curr_timestamp()
   );
 
@@ -244,22 +255,26 @@ pub fn add_thread(
   m.set_set_nquads(q.into());
 
   match txn.mutate(m) {
-    Err(e) => { println!("{:?}", e); format!("post?err=3") },
-    Ok(assigned) => {
-      match txn.commit() {
-        Err(e) => { println!("{:?}", e); format!("post?err=3") },
-        Ok(_) => {
-          let mut new_thread_uid: String = "".to_string();
-
-          for (key, val) in assigned.uids.iter() {
-            println!("\t{} => {}", key, val);
-            if key == "new_thread" {
-              new_thread_uid = val.clone();
-            }
-          }
-          format!("t/{}", new_thread_uid)
-        }
-      }
+    Err(e) => {
+      println!("{:?}", e);
+      format!("post?err=3")
     }
+    Ok(assigned) => match txn.commit() {
+      Err(e) => {
+        println!("{:?}", e);
+        format!("post?err=3")
+      }
+      Ok(_) => {
+        let mut new_thread_uid: String = "".to_string();
+
+        for (key, val) in assigned.uids.iter() {
+          println!("\t{} => {}", key, val);
+          if key == "new_thread" {
+            new_thread_uid = val.clone();
+          }
+        }
+        format!("t/{}", new_thread_uid)
+      }
+    },
   }
 }

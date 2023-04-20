@@ -1,6 +1,5 @@
 module.exports = {
-  purge: ['./templates/**/*.tera'],
-  darkMode: false, // or 'media' or 'class'
+  content: ['./templates/**/*.tera'],
   theme: {
     fontFamily: {
       'nunito': ['Nunito']

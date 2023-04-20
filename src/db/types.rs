@@ -1,5 +1,5 @@
-use serde::{Deserialize, Serialize};
 use crate::db::utils;
+use serde::{Deserialize, Serialize};
 
 pub struct DbConn {
   pub db: dgraph::Dgraph,
